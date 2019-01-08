@@ -1,6 +1,7 @@
 /**
  * 判断表单是否为空 
  * */
+
 function checkEmpty(value, content){
     if(value == null || value.length == 0){
         alert(content+"不能为空");

@@ -12,7 +12,8 @@ public class Page4Navigator<T> {
     long totalElements; //  总共有多少条数据
     int size;           //  每页最多多少条数据
     int numberOfElements;   //  当前页有多少条数据
-    List<T> content;
+    //  vue.items = response.data.content
+    List<T> content;        //  使用分页后，ajax获取数据，得到的是 Pag4Navigator 对象，从该对象的 content属性，才能包含 Category 对象
     boolean isHasContent;
     boolean first;
     boolean last;

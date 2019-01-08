@@ -40,12 +40,10 @@ public class ImageUtil {
         try {
             //  获取 image，其像素数据来自指定的文件
             Image image = Toolkit.getDefaultToolkit().createImage(serverImage.getAbsolutePath());
-            //  从 image 获取它的像素，x=0，y=0，
+            //  从 image 获取它的像素，位置：x=0，y=0，
             PixelGrabber pixelGrabber = new PixelGrabber(image,0,0,-1,-1,true);
             pixelGrabber.getPixels();   //  获得一个图像像素的数组（字节型或整型）？？
-            //  DataBuffer：将像素保存为一维数组
-
-
+            
             int width = pixelGrabber.getWidth();    //  图像宽度
             int height = pixelGrabber.getHeight();  //  图像高度
 
@@ -53,7 +51,7 @@ public class ImageUtil {
             //  ColorModel ：图片参数：转换格式后的图片参数（颜色深度、rgb值）
             //  DirectColorModel：alpha=1，opaque不透明
             final ColorModel unsignedImage = new DirectColorModel(32,RGB_MASKS[0],RGB_MASKS[1],RGB_MASKS[2]);  //
-
+            //  DataBuffer：将像素保存为一维数组
             DataBuffer dataBuffer = new DataBufferInt((int[]) pixelGrabber.getPixels(),
                     pixelGrabber.getWidth() * pixelGrabber.getHeight());
 
@@ -69,7 +67,7 @@ public class ImageUtil {
 
             return imagePrototype;
         }
-        catch (Exception e){    //  InterruptedException is never thrown in corresponding try block
+        catch (Exception  e){    //  InterruptedException is never thrown in corresponding try block
             e.printStackTrace();
             return null;
         }

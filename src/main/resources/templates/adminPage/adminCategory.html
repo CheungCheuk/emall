@@ -45,10 +45,36 @@
 <div th:replace="/publicPage/adminPage/Footer::html"></div>
 -->
 
+<div class="panel panel-warning addDiv">
+    <div class="panel-heading">新增分类</div>
+    <div class="panel-body">
+        <table class="addTable">
+            <tr>
+                <td>名称</td>
+                <td><input  @keyup.enter="add" v-model.trim="item.name" type="text" class="form-control"></td>
+            </tr>
+            <tr>
+                <td>图片</td>
+                <td>
+                    <input id="categoryPic" accept="image/*" type="file" name="image" @change="setFile($event)" />
+                </td>
+            </tr>
+            <tr class="submitTR">
+                <td colspan="2" align="center">
+                    <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
 <script>
     var url = "categories";
     var modelData = {
-        items:[]
+        items:[],
+        item:{id:0,name:""},
+        file:null
     };
     var vue = new Vue({
         //  忘记加 # 导致没有挂载成功
@@ -64,12 +90,37 @@
                 .get(url)                 //  this.uri +"?start="+start
                 .then(function(response){
                     vue.items = response.data;    //  this.items = response.data; 无法显示所有数据  这个this，作用域范围是是 then函数里，而非 Vue的实例对象
-                    console.log(response);
+                    console.log(response.data);
                 }).catch(function (error) {
                     console.log(error.message);
+                    console.log("获取服务器信息失败");
                 });
-            }
+            },
         
+            add:function(){
+                if ( !checkEmpty(this.item.name,"类别名称")) {
+                    return;
+                }
+                if ( !checkEmpty(this.file,"图片") ){
+                    return;
+                }
+                // var url = this.url;
+                //  格式化需要上传的文件
+                var formData = new FormData();
+                formData.append("name",this.item.name);
+                formData.append("image",this.file);
+                //  ajax 上传文件
+                axios.post(url,formData).then(function(response){
+                    console.log(response);
+                    vue.list();
+                    // document.getElementById("categoryPic").value = 
+                    vue.item = {id:0, name:""};
+                    vue.file = null;
+                });
+            },
+            setFile:function(event){
+                this.file = event.target.files[0];
+            }
         }
     });
 </script>

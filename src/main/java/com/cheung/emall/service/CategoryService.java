@@ -10,5 +10,6 @@ public interface CategoryService {
 
 //    Page4Navigator<Category> listCategoryByPaging(int start, int size, int navigatePages);
     void add(Category bean);
+
     
 }

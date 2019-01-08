@@ -34,7 +34,7 @@ public class CategoryController {
     public Object add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
         categoryService.add(category);
-        updateImage(category, image, request);//    忘记添加这句代码，上传补了
+        saveImage(category, image, request);//    忘记添加这句代码，上传补了
         return category;
     }
 //    @GetMapping("/categories")
@@ -48,19 +48,23 @@ public class CategoryController {
 //    }
 
     
-
-    public void updateImage(Category category, MultipartFile uploadedImage, HttpServletRequest request)
+/**
+ * 将文件保存在服务器 /webapp/img/category 目录下
+ * @param category
+ * @param uploadedImage
+ * @param request
+ * @throws IOException
+ */
+    public void saveImage(Category category, MultipartFile uploadedImage, HttpServletRequest request)
             throws IOException{
-
         File serverImageFolder = new File(request.getServletContext().getRealPath("img/category"));
-        File serverImage = new File(serverImageFolder,category.getId()+".jpg");
+        File serverImage = new File(serverImageFolder,category.getId()+".jpg"); //  对图片命名
         if ( !serverImageFolder.getParentFile().exists()){
             serverImageFolder.getParentFile().mkdirs();
         }
-        //  将上传的图片，复制到服务器的指定位置，这里是：/img/category
-        uploadedImage.transferTo(serverImage);
-
+        uploadedImage.transferTo(serverImage);          //  将上传的图片，复制到服务器的指定位置，这里是：/img/category
         //  将服务器的图片，转换成 可渲染的 图片缓冲数据
+        //  保证 ImageIO.write 转换处的 jpg 文件正常显示
         BufferedImage renderPrototype = ImageUtil.reRenderImageBuffer(serverImage);
 //        BufferedImage renderPrototype = ImageUtil.change2jpg(serverImage);
         //  将服务器的图片，转换成jpg格式
