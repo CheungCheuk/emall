@@ -5,7 +5,9 @@ import com.cheung.emall.service.CategoryService;
 // import com.cheung.emall.util.ImageUtil;
 // import com.cheung.emall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +33,7 @@ public class CategoryController {
         return categoryService.listCategory();
     }
     @PostMapping("/categories")
-    public Object add(Category category, MultipartFile image, HttpServletRequest request)
+    public Category add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
         categoryService.add(category);
         saveImage(category, image, request);//    忘记添加这句代码，无法上传
@@ -40,6 +42,24 @@ public class CategoryController {
         //  Resolved exception caused by Handler execution: java.lang.IllegalArgumentException: image == null!
         return category;
     }
+
+    //  Resolved exception caused by Handler execution:
+    //  org.springframework.dao.EmptyResultDataAccessException: 
+    //  No class com.cheung.emall.pojo.Category entity with id 91 exists!
+    //  @PathVariable 表明 方法的参数应该和 URI 中的模版参数绑定在一起
+    @DeleteMapping("/categories/{id}")
+    public void delete(
+        @PathVariable("id") int id,
+        HttpServletRequest request
+    )throws Exception{
+        categoryService.delete(id);
+        File imageFolder = new File(request.getServletContext().getRealPath("/img/category"));
+        File imagFile = new File(imageFolder, id+".jpg");
+        imagFile.delete();
+        // return null;
+    }
+
+
 //    @GetMapping("/categories")
 //    public Page4Navigator<Category> listCategoryByPages(
 //            @RequestParam(value = "start",defaultValue = "0") int start,

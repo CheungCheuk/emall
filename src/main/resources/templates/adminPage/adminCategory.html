@@ -36,7 +36,7 @@
                     <td><a v-bind:href=" 'admin_commodity?cid=' +item.id "><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
                     <td><a v-bind:href=" 'admin_attribute?cid=' + item.id "><span class="glyphicon  glyphicon-tags "></span></a></td>
                     <td><a v-bind:href=" 'edit_category?id=' +item.id "><span class="glyphicon glyphicon-pencil "></span></a></td>
-                    <td><a href="#nowhere" @click="deleteBean(item.id) "><span class="glyphicon glyphicon-trash"></span></a></td>
+                    <td><a href="#nowhere" @click="deleteCategory(item.id) "><span class="glyphicon glyphicon-trash"></span></a></td>
                 </tr>
                 </tbody>
             </table>
@@ -46,7 +46,7 @@
 -->
 
 <div class="panel panel-warning addDiv">
-    <div class="panel-heading">新增分类</div>
+    <div class="panel-heading">新增类别</div>
     <div class="panel-body">
         <table class="addTable">
             <tr>
@@ -61,7 +61,7 @@
             </tr>
             <tr class="submitTR">
                 <td colspan="2" align="center">
-                    <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
+                    <a href="#nowhere"  @click="add" class="btn btn-success"> 提交 </a>
                 </td>
             </tr>
         </table>
@@ -70,7 +70,7 @@
 
 
 <script>
-    var url = "categories";
+    var uri = "categories";
     var modelData = {
         items:[],
         item:{id:0,name:""},
@@ -87,7 +87,7 @@
         methods:{
             list:function(){
                 axios
-                .get(url)                 //  this.uri +"?start="+start
+                .get(uri)                 //  this.uri +"?start="+start
                 .then(function(response){
                     vue.items = response.data;    //  this.items = response.data; 无法显示所有数据  这个this，作用域范围是是 then函数里，而非 Vue的实例对象
                     console.log(response.data);
@@ -98,10 +98,10 @@
             },
         
             add:function(){
-                if ( !checkEmpty(this.item.name,"类别名称")) {
+                if ( !isEmpty(this.item.name,"类别名称")) {
                     return;
                 }
-                if ( !checkEmpty(this.file,"图片") ){
+                if ( !isEmpty(this.file,"图片") ){
                     return;
                 }
                 // var url = this.url;
@@ -110,7 +110,7 @@
                 formData.append("name",this.item.name);
                 formData.append("image",this.file);
                 //  ajax 上传文件
-                axios.post(url,formData).then(function(response){
+                axios.post(uri,formData).then(function(response){
                     console.log(response);
                     vue.list();
                     // document.getElementById("categoryPic").value = 
@@ -118,8 +118,31 @@
                     vue.file = null;
                 });
             },
+            
             setFile:function(event){
                 this.file = event.target.files[0];
+            },
+
+            deleteCategory:function(id){
+                if ( isDeleteLink() ){
+                    return;
+                }
+                // let url = this.uri+"/"+id;   url: "undefined/91"
+                let url = uri+"/"+id;   //  不要乱用 this，否则
+                axios
+                .delete(url)
+                .then(function(response){
+                    // console.log(reponse.data);
+                    vue.list();
+                    // if( response.data.length != 0 ){
+                    //     alert(response.data);
+                    // }else{
+                    //     vue.list();
+                    // }
+                });
+                // .catch(function(error){
+                //     console.log(error.message);
+                // });
             }
         }
     });
