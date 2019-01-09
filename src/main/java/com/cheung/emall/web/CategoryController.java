@@ -34,7 +34,10 @@ public class CategoryController {
     public Object add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
         categoryService.add(category);
-        saveImage(category, image, request);//    忘记添加这句代码，上传补了
+        saveImage(category, image, request);//    忘记添加这句代码，无法上传
+        //  java.lang.NullPointerException
+        // java.lang.IllegalArgumentException: image == null!
+        //  Resolved exception caused by Handler execution: java.lang.IllegalArgumentException: image == null!
         return category;
     }
 //    @GetMapping("/categories")
@@ -63,11 +66,12 @@ public class CategoryController {
             serverImageFolder.getParentFile().mkdirs();
         }
         uploadedImage.transferTo(serverImage);          //  将上传的图片，复制到服务器的指定位置，这里是：/img/category
+
+        //  注释掉这两行，依然可以上传图片，即省略了图片转换步骤
         //  将服务器的图片，转换成 可渲染的 图片缓冲数据
         //  保证 ImageIO.write 转换处的 jpg 文件正常显示
-        BufferedImage renderPrototype = ImageUtil.reRenderImageBuffer(serverImage);
-//        BufferedImage renderPrototype = ImageUtil.change2jpg(serverImage);
+        // BufferedImage renderPrototype = ImageUtil.reRenderImageBuffer(serverImage);
         //  将服务器的图片，转换成jpg格式
-        ImageIO.write(renderPrototype,"jpg",serverImage);
+        // ImageIO.write(renderPrototype,"jpg",serverImage);    
     }
 }

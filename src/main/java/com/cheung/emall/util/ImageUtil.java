@@ -41,7 +41,8 @@ public class ImageUtil {
             //  获取 image，其像素数据来自指定的文件
             Image image = Toolkit.getDefaultToolkit().createImage(serverImage.getAbsolutePath());
             //  从 image 获取它的像素，位置：x=0，y=0，
-            PixelGrabber pixelGrabber = new PixelGrabber(image,0,0,-1,-1,true);
+            // PixelGrabber pixelGrabber = new PixelGrabber(image,0,0,-1,-1,true);
+            PixelGrabber pixelGrabber = new PixelGrabber(image,0,0,1,1,true);
             pixelGrabber.getPixels();   //  获得一个图像像素的数组（字节型或整型）？？
             
             int width = pixelGrabber.getWidth();    //  图像宽度
@@ -60,7 +61,8 @@ public class ImageUtil {
             //  WritableRaster：将 Raster 的像素矩阵变为可读写的
             //  createPackedRaster：创建一个 Raster
 
-            WritableRaster writableRaster = Raster.createPackedRaster(dataBuffer, width, height, width, RGB_MASKS,null);
+            WritableRaster writableRaster = Raster.createPackedRaster(dataBuffer, width, height, width, RGB_MASKS,null);    
+            //  java.lang.IllegalArgumentException: Width (-1) and height (-1) must be > 0
 
             //  转码后的图片
             BufferedImage imagePrototype = new BufferedImage(unsignedImage, writableRaster,false,null);
