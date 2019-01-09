@@ -2,7 +2,7 @@
  * 判断表单是否为空 
  * */
 
-function checkEmpty(value, content){
+function isEmpty(value, content){
     if(value == null || value.length == 0){
         alert(content+"不能为空");
         return false;
@@ -78,10 +78,12 @@ function checkInt(value,content){
 /**
  * 判断是否删除
  */
-function checkDeleteLink(){
+function isDeleteLink(){
     var  confirmDelete = confirm("确认要删除");
-    if(confirmDelete){return true;}
-    return false;
+    if(confirmDelete){
+        return false;
+    }
+    return true;
 }
 
 

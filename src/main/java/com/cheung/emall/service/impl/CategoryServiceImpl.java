@@ -30,6 +30,11 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDAO.save(bean);
     }
 
+    @Override
+    public void delete(int id) {
+        categoryDAO.delete(id);
+    }
+
 //    @Override
 //    public Page4Navigator<Category> listCategoryByPaging(int start, int size, int navigatePages) {
 //        Sort sort = new Sort(Sort.Direction.DESC,"id");
