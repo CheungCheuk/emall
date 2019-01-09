@@ -17,7 +17,7 @@ public class ImageUtil {
      *
      * @param serverImage 保存在服务器上的图片
      * @return BufferedImage：jpgImage
-     * @throws InterruptedException
+     * @throws Exception
      */
 //    public static BufferedImage change2jpg(File f) {
 //        try {
