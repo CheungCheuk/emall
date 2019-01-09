@@ -2,7 +2,7 @@ package com.cheung.emall.web;
 
 import com.cheung.emall.pojo.Category;
 import com.cheung.emall.service.CategoryService;
-import com.cheung.emall.util.ImageUtil;
+// import com.cheung.emall.util.ImageUtil;
 // import com.cheung.emall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
+// import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import java.awt.image.BufferedImage;
+// import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -62,15 +62,21 @@ public class CategoryController {
             throws IOException{
         File serverImageFolder = new File(request.getServletContext().getRealPath("img/category"));
         File serverImage = new File(serverImageFolder,category.getId()+".jpg"); //  对图片命名
+        //  图片目录不存在，则创建该目录
         if ( !serverImageFolder.getParentFile().exists()){
             serverImageFolder.getParentFile().mkdirs();
         }
-        uploadedImage.transferTo(serverImage);          //  将上传的图片，复制到服务器的指定位置，这里是：/img/category
+        //·将上传的图片，保存到服务器的指定位置："img/category"
+        uploadedImage.transferTo(serverImage);
+        //  此处的 serverImage 转移到了 img/category，导致后面执行的语句，出现 NullPointerException
 
         //  注释掉这两行，依然可以上传图片，即省略了图片转换步骤
         //  将服务器的图片，转换成 可渲染的 图片缓冲数据
         //  保证 ImageIO.write 转换处的 jpg 文件正常显示
         // BufferedImage renderPrototype = ImageUtil.reRenderImageBuffer(serverImage);
+        // BufferedImage renderPrototype = ImageUtil.reRenderImageBuffer(serverImage);
+
+
         //  将服务器的图片，转换成jpg格式
         // ImageIO.write(renderPrototype,"jpg",serverImage);    
     }
