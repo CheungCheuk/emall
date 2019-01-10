@@ -30,9 +30,21 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDAO.save(bean);
     }
 
+
+
     @Override
     public void delete(int id) {
         categoryDAO.delete(id);
+    }
+
+    @Override
+    public Category get(int id) {
+        return categoryDAO.findOne(id);
+    }
+    
+    @Override
+    public void update(Category category) {
+        categoryDAO.save(category);
     }
 
 //    @Override

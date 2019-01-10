@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/publicPage/adminPage/Header::html('编辑分类')" ></head>
+<body>
+<div th:replace="/publicPage/adminPage/Navigator::html"></div>
+
+<div id="workingArea">
+    <ol class="breadcrumb">
+        <li><a href="admin_category">所有分类</a></li>
+        <li class="active">编辑分类</li>
+    </ol>
+    <div class="panel panel-warning editDiv">
+        <div class="panel-heading">编辑分类</div>
+        <div class="panel-body">
+            <table class="editTable">
+                <tr>
+                    <td>分类名称</td>
+                    <td><input  @keyup.enter="update" v-model.trim="item.name" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>分类图片</td>
+                    <td>
+                        <input id="categoryPic" accept="image/*" type="file" name="image" @change="setFile($event)" />
+                    </td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <input type="hidden" name="id"   v-model.trim="item.id" >
+                        <!-- <a href="#nowhere" class="btn btn-success" @click="update">提 交</a> -->
+                        <button type="submit"class="btn btn-success" @click="update">提交</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+var uri = "categories";
+var uriList = "admin_category";
+var modelData = {
+    item:{id:0,name:""},
+    file:"" // 不是 null？
+};
+
+var vue = new Vue({
+    el:"#workingArea",
+    data:modelData,
+    mounted:function(){
+        this.get();
+    },
+    methods:{
+        get:function(){
+            var id = getUrlParms("id");
+            let url = uri + "/" + id;   //  categories/NaN
+            axios.get(url).then(function(response){
+                vue.item = response.data;
+                console.log(response);  
+            });
+        },
+        update:function(){
+            if ( !isEmpty(this.item.name,"类别名称")){
+                return;
+            }
+            let url = uri + "/" + this.item.id;
+
+            var formData = new FormData();
+            formData.append("name",this.item.name);
+            formData.append("image",this.file);
+
+            axios
+            .put(url,formData)
+            .then(function(response){
+                // location.href = vue.uriList;    //  包含整个URL的USVString
+                location.href = uriList;    //  包含整个URL的USVString
+                console.log(response);
+            });
+        },
+        setFile:function(event){
+                this.file = event.target.files[0];
+        }
+    }
+});
+</script>
+
+<div th:replace="/publicPage/adminPage/Footer::html"></div>
+</body>
+</html>
+
+
+
+
+
+

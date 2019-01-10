@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.PutMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,6 +61,24 @@ public class CategoryController {
         // return null;
     }
 
+    @GetMapping("/categories/{id}")
+    public Category get(@PathVariable("id") int id)throws Exception{
+        return categoryService.get(id);
+    }
+    @PutMapping("/categories/{id}")
+    public Category updCategory(Category category, MultipartFile image, HttpServletRequest request)throws NullPointerException{
+        String categoryName = request.getParameter("name");
+        category.setName(categoryName);
+        categoryService.update(category);
+        try {
+            if ( image != null) {
+                saveImage(category, image, request);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
 
 //    @GetMapping("/categories")
 //    public Page4Navigator<Category> listCategoryByPages(
