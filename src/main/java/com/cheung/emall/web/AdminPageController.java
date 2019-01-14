@@ -16,12 +16,14 @@ public class AdminPageController {
 //    @GetMapping("/admin")
 //    @GetMapping(value = "/admin")
 //    @RequestMapping(path = "/admin",method = RequestMethod.GET)
+    
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
     public String adminRedirect(){
         return "redirect:admin_category";
     }
 
 //    @RequestMapping(path = "/admin_classification",method = RequestMethod.GET)
+    
     @GetMapping("/admin_category")
     public String showCategory(){
         //  跳转到 adminCategory.html 页面
@@ -32,5 +34,36 @@ public class AdminPageController {
     public String editCategory(){
         return "adminPage/editCategory";
     }
+    @GetMapping("/admin_attribute")
+    public String listAttribute(){
+        return "adminPage/adminAttribute";
+    }
+
+    @GetMapping("/edit_attribute")
+    public String editAttribute(){
+        return "adminPage/editAttribute";
+    }
+
+    @GetMapping("/admin_good")
+    public String listGood(){
+        return "adminPage/adminGood";
+    }
+
+    @GetMapping("/admin_indent")
+    public String listIndent(){
+        return "adminPage/adminIndent";
+    }
+
+    @GetMapping("/admin_user")
+    public String listUser(){
+        return "adminPage/adminUser";
+    }
+
+    @GetMapping("/edit_attributevalue")
+    public String listAttributeValue(){
+        return "adminPage/editAttributeValue";
+    }
+
+    
 
 }

@@ -1,0 +1,83 @@
+
+1<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/publicPage/adminPage/Header::html('编辑属性')" ></head>
+<body>
+<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+
+<div id="vueMountedHook">
+    <ol class="breadcrumb">
+        <li><a href="admin_category">所有分类</a></li>
+        <li><a v-bind:href="'admin_attribute?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">属性管理</li>
+    </ol>
+
+    <div class="panel panel-warning editDiv">
+        <div class="panel-heading">编辑属性</div>
+        <div class="panel-body">
+            <table class="editTable">
+                <tr>
+                    <td>属性名称</td>
+                    <td><input  @keyup.enter="update"  v-model.trim="item.name" type="text" class="form-control"></td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <input type="hidden" name="id"   v-model.trim="item.id" >
+                        <!-- <a href="#nowhere" class="btn btn-success" @click="update">提 交</a> -->
+                        <button type="submit"class="btn btn-success" @click="update">提交</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+<script>
+var ajaxURI = "attributes"; //  @PutMapping("/attributes")
+var pageURL = "admin_attribute";   //  @GetMapping("/admin_attribute")
+
+var vue = new Vue({
+    el:"#vueMountedHook",
+    data:{
+        item:"",
+        category:""
+    },
+
+    mounted() {
+        this.get();
+    },
+
+    methods: {
+        get:function(){
+            let id = getUrlParms("id"); //  @GetMapping("/attributes/{id}")
+            let url = ajaxURI + "/" + id;
+            axios.get(url).then(function(response){
+                vue.item = response.data;
+                vue.category = vue.item.category;   //  ????
+            });
+        },
+
+        update:function(){
+            if( !isEmpty(this.item.name,"")){
+                return;
+            }    //  @PutMapping("/attributes")
+            axios.put(ajaxURI,vue.item).then(function(response){
+                console.log(response.data);
+                location.href = pageURL + "?cid=" + vue.category.id;
+            });
+        }
+    }
+});
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

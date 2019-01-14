@@ -8,7 +8,7 @@
 
 <div th:replace="/publicPage/adminPage/Navigator::html"></div>
 
-    <div id="workPlace">
+    <div id="vueMountedHook">
     <h1 class="label label-warning">商品管理</h1>
     <br>
     
@@ -32,7 +32,7 @@
                     <!--    忘记 v-bind 绑定了 ，不要用缩写 ":"  很恶心，根本看不见-->
                     <td>{{ item.name }}</td>
                     <td><img height="40px"  v-bind:src=" 'img/category/' + item.id + '.jpg' "></td>
-                    <td><a v-bind:href=" 'admin_commodity?cid=' +item.id "><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
+                    <td><a v-bind:href=" 'admin_good?cid=' +item.id "><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
                     <td><a v-bind:href=" 'admin_attribute?cid=' + item.id "><span class="glyphicon  glyphicon-tags "></span></a></td>
                     <td><a v-bind:href=" 'edit_category?id=' +item.id "><span class="glyphicon glyphicon-pencil "></span></a></td>
                     <td><a href="#nowhere" @click="deleteCategory(item.id) "><span class="glyphicon glyphicon-trash"></span></a></td>
@@ -60,7 +60,8 @@
             </tr>
             <tr class="submitTR">
                 <td colspan="2" align="center">
-                    <a href="#nowhere"  @click="add" class="btn btn-success"> 提交 </a>
+                    <!-- <a href="#nowhere"  @click="add" class="btn btn-success"> 提交 </a> -->
+                    <button type="submit"class="btn btn-success" @click="add">提交</button>
                 </td>
             </tr>
         </table>
@@ -76,7 +77,7 @@
     };
     var vue = new Vue({
         //  忘记加 # 导致没有挂载成功
-        el: '#workPlace',
+        el: '#vueMountedHook',
         data:modelData,
         mounted:function(){
             // vue.list();     // error in mounted: undefined is not an object

@@ -1,0 +1,18 @@
+package com.cheung.emall.service;
+
+import java.util.List;
+
+import com.cheung.emall.pojo.Attribute;
+
+// import org.springframework.data.domain.Sort;
+
+/**
+ * AttributeService
+ */
+public interface AttributeService {
+    void add(Attribute attribute);
+    void delete(int id);
+    void update(Attribute attribute);
+    Attribute get(int id);
+    List<Attribute> list(int category_id);
+}

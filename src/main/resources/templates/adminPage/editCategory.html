@@ -4,7 +4,7 @@
 <body>
 <div th:replace="/publicPage/adminPage/Navigator::html"></div>
 
-<div id="workingArea">
+<div id="vueMountedHook">
     <ol class="breadcrumb">
         <li><a href="admin_category">所有分类</a></li>
         <li class="active">编辑分类</li>
@@ -44,7 +44,7 @@ var modelData = {
 };
 
 var vue = new Vue({
-    el:"#workingArea",
+    el:"#vueMountedHook",
     data:modelData,
     mounted:function(){
         this.get();
@@ -62,7 +62,7 @@ var vue = new Vue({
             if ( !isEmpty(this.item.name,"类别名称")){
                 return;
             }
-            let url = uri + "/" + this.item.id;
+            let url = uri + "/" + this.item.id; //  @PutMapping("/categories/{id}")
 
             var formData = new FormData();
             formData.append("name",this.item.name);
