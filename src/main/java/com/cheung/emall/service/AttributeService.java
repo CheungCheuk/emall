@@ -10,9 +10,9 @@ import com.cheung.emall.pojo.Attribute;
  * AttributeService
  */
 public interface AttributeService {
-    void add(Attribute attribute);
+    Attribute add(Attribute attribute);
     void delete(int id);
-    void update(Attribute attribute);
+    Attribute update(Attribute attribute);
     Attribute get(int id);
     List<Attribute> list(int category_id);
 }

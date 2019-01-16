@@ -35,7 +35,7 @@
                     <td><a v-bind:href=" 'admin_good?cid=' +item.id "><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
                     <td><a v-bind:href=" 'admin_attribute?cid=' + item.id "><span class="glyphicon  glyphicon-tags "></span></a></td>
                     <td><a v-bind:href=" 'edit_category?id=' +item.id "><span class="glyphicon glyphicon-pencil "></span></a></td>
-                    <td><a href="#nowhere" @click="deleteCategory(item.id) "><span class="glyphicon glyphicon-trash"></span></a></td>
+                    <td><a href="" @click="deleteCategory(item.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
                 </tr>
                 </tbody>
             </table>
@@ -123,6 +123,7 @@
             },
 
             deleteCategory:function(id){
+                alert("若需要删除，请先将属于该分类的商品及属性删除，否则删除失败");
                 if ( isDeleteLink() ){
                     return;
                 }

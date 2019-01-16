@@ -25,16 +25,16 @@ public class AttributeServiceImpl  implements AttributeService{
 
 
     @Override
-    public void add(Attribute attribute) {
-        attributeDao.save(attribute);
+    public Attribute add(Attribute attribute) {
+        return attributeDao.save(attribute);
     }
     @Override
     public void delete(int id) {
         attributeDao.delete(id);
     }
     @Override
-    public void update(Attribute attribute) {
-        attributeDao.save(attribute);
+    public Attribute update(Attribute attribute) {
+        return attributeDao.save(attribute);
     }
     @Override
     public Attribute get(int id) {

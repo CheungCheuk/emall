@@ -49,6 +49,11 @@ public class AdminPageController {
         return "adminPage/adminGood";
     }
 
+    @GetMapping("/edit_good")
+    public String editGood(){
+        return "adminPage/editGood";
+    }
+
     @GetMapping("/admin_indent")
     public String listIndent(){
         return "adminPage/adminIndent";

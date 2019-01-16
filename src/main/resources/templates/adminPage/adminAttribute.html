@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="/publicPage/adminPage/Header::html('类别属性')" ></head>
+<head th:include="/publicPage/adminPage/Header::html('商品类别属性')" ></head>
 <body>
 <div th:replace="/publicPage/adminPage/Navigator::html" ></div>
 
 <div id="vueMountedHook" >
     <ol class="breadcrumb">
-        <li><a href="admin_category">所有分类</a></li>
+        <li><a href="admin_category">所有商品类类别</a></li>
         <li><a v-bind:href=" 'admin_attribute?cid=' + category.id ">{{category.name}}</a></li>
         <li class="active">类别属性管理</li>
     </ol>
@@ -30,7 +30,7 @@
                     <a :href="'edit_attribute?id=' + item.id "><span class="glyphicon glyphicon-edit"></span></a>
                 </td>
                 <td>
-                    <a href="#nowhere"  @click="deleteItem(item.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                    <a href=""  @click="deleteItem(item.id)"><span class="   glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -80,7 +80,7 @@
         },
         
         methods: {
-            getCategory:function(cid){  //  CategoryController :@GetMapping("/categories/{id}")
+            getCategory:function(cid){          //  CategoryController :@GetMapping("/categories/{id}")
                 let url = categoryUri + "/" + cid;
                 axios.get(url).then(function(response){
                     vue.category = response.data;

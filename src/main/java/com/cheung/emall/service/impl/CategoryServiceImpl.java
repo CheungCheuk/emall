@@ -26,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDAO.findAll(sort);
     }
     @Override
-    public void add(Category bean) {
-        categoryDAO.save(bean);
+    public Category add(Category bean) {
+        return categoryDAO.save(bean);
     }
 
 
@@ -43,8 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
     
     @Override
-    public void update(Category category) {
-        categoryDAO.save(category);
+    public Category update(Category category) {
+        return categoryDAO.save(category);
     }
 
 //    @Override

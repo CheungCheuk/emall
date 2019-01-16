@@ -9,8 +9,8 @@ public interface CategoryService {
     List<Category> listCategory();
 
 //    Page4Navigator<Category> listCategoryByPaging(int start, int size, int navigatePages);
-    void add(Category bean);
+    Category add(Category bean);
     void delete(int id);
     Category get(int id);
-    void update(Category category);
+    Category update(Category category);
 }

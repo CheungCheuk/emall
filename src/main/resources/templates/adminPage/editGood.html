@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/publicPage/adminPage/Header::html('编辑产品')" ></head>
+<body>
+<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+
+<div id="vueMountedHook">
+    <ol class="breadcrumb">
+        <li><a href="admin_category">所有分类</a></li>
+        <!-- vue.category 的作用 -->
+        <li><a v-bind:href="'admin_good?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">商品管理</li>
+    </ol>
+
+    <div class="panel panel-warning editDiv">
+        <div class="panel-heading">编辑商品</div>
+        <div class="panel-body">
+            <table class="editTable">
+                <tr>
+                    <td>商品名称</td>
+                    <td><input  @keyup.enter="update" v-model.trim="item.name" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>商品描述</td>
+                    <td><input  @keyup.enter="update" v-model.trim="item.subTitle" type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>原价</td>
+                    <td><input  @keyup.enter="update" v-model.trim="item.originalPrice"  type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>折扣价</td>
+                    <td><input  @keyup.enter="update" v-model.trim="item.promotePrice" type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>库存</td>
+                    <td><input  @keyup.enter="update" v-model.trim="item.stock"  type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <input type="hidden" name="id"   v-model.trim="item.id" >
+                        <!-- <a href="#nowhere" class="btn btn-success" @click="update">提 交</a> -->
+                        <button type="submit"class="btn btn-success" @click="update">提交</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+
+<script>
+var good_id = getUrlParms("good_id");
+var updateURL = "goods/" + good_id;             //  @PutMapping("/goods/{id}")
+var getURL = "goods/" + good_id;                //  @GetMapping("/goods/{id}")
+
+var vue = new Vue({
+    el:"#vueMountedHook",
+    data:{
+        item:{
+            id:0,
+            name:"",
+            subTitle:"",
+            originalPrice:"",
+            promotePrice:"",
+            stock:"",
+            category:{
+                id:0
+            }
+        },
+        // category:null    null is not an object
+        category:""
+    },
+    mounted(){
+        axios.get(getURL).then( response =>{
+            vue.item = response.data;
+            vue.category = vue.item.category;
+        }).catch( error =>{
+            console.log(error.message);
+        })
+    },
+    methods:{
+        update:function(){
+            if( !isEmpty(this.item.name,"商品名称") ){
+                    return;
+            }
+            if( !isEmpty(this.item.subTitle,"商品描述") ){
+                    return;
+            }
+            if( !isNumber(this.item.originalPrice,"原价") ){
+                    return;
+            }
+            if( !isNumber(this.item.promotePrice,"促销价") ){
+                    return;
+            }
+            if( !isInt(this.item.stock,"库存") ){
+                    return;
+            }
+            axios.put(updateURL,vue.item).then( response =>{
+                console.log(response.data);
+                location.href = "admin_good?cid=" + vue.item.category.id;    //  admin_good?cid=' +item.id 
+            }).catch(error => {
+                console.log(error.message);
+            });
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>

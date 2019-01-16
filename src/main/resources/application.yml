@@ -10,8 +10,9 @@ spring:
     hibernate:
       ddl-auto: none
       naming:
-      #命名转换，驼峰命名法——>下划线：UserName => user_name
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+          physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy 
+      #在进行领域映射时,首字母小写，大写字母变为下划线加小写，驼峰命名法——>下划线：UserName => user_name
+        #physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
   http:

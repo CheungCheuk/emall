@@ -1,5 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/publicPage/adminPage/Header::html('商品')" ></head>
+<body>
+<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+
+<div id="vueMountedHook">
+    <ol class="breadcrumb">
+        <li><a href="admin_category">所有商品类别</a></li>
+        <!-- getCategory() 的作用 -->
+        <li><a v-bind:href=" 'admin_good?cid=' + category.id ">{{category.name}}</a></li>   
+        <li class="active">商品</li>
+    </ol>
+
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+            <tr class="success">
+                <!-- <th>ID</th> -->
+                <th>商品名称</th>
+                <th>商品描述</th>
+                <th width="53px">原价</th>
+                <th width="80px">折扣价</th>
+                <th width="80px">库存</th>
+                <th width="80px">设置商品属性</th>
+                <th>编辑商品信息</th>
+                <th width="80px">商品图片管理</th>
+                <th>图片</th>
+                <th>删除商品</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in items ">
+                <!-- <td>{{item.id}}</td> -->
+                <td>{{item.name}}</td>
+                <td>{{item.subTitle}}</td>
+                <td>{{item.originalPrice}}</td>
+                <td>{{item.promotePrice}}</td>
+                <td>{{item.stock}}</td>
+                <td><a v-bind:href="'edit_attributeValue?good_id=' + item.id "><span class="glyphicon glyphicon-th-list"></span></a></td>
+                <td><a v-bind:href="'edit_good?good_id=' + item.id "><span class="glyphicon glyphicon-edit"></span></a></td>
+                <td><a v-bind:href="'admin_goodImage?good_id=' + item.id "><span class="glyphicon glyphicon-picture"></span></a></td>
+                <td></td>
+                <td><a href=""  @click="deleteGood(item.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div th:replace="/publicPage/adminPage/Page::html" ></div> -->
+
+    <div class="panel panel-warning addDiv">
+        <div class="panel-heading">添加商品</div>
+        <div class="panel-body">
+            <table class="addTable">
+                <tr>
+                    <td>商品名称</td>
+                    <td><input  @keyup.enter="add" v-model.trim="item.name" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>商品描述</td>
+                    <td><input  @keyup.enter="add" v-model.trim="item.subTitle" type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>原价</td>
+                    <td><input  @keyup.enter="add" v-model.trim="item.originalPrice"  type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>折扣</td>
+                    <td><input  @keyup.enter="add" v-model.trim="item.promotePrice" type="text"
+                                class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>库存</td>
+                    <td><input  @keyup.enter="add" v-model.trim="item.stock"  type="text"
+                                class="form-control"></td>
+                </tr>
+
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <!-- <a href="#nowhere"  @click="add" class="btn btn-success">提交</a> -->
+                        <button type="submit"class="btn btn-success" @click="add">提交</button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+<script>
+var cid = getUrlParms("cid");
+// var good_id = getUrlParms("good_id");
+// var good_id = vue.item.id;
+var postURL = "goods";                          //  @PostMapping("/goods")
+// var deleteURL = "goods/" + good_id;             //  @DeleteMapping("/goods/{id}")
+var categoryURL ="categories/" + cid;           //  CategoryController :@GetMapping("/categories/{id}")
+var listAllURL = categoryURL + "/goods";        //  @GetMapping("/categories/{cid}/goods")
 
 
+var vue = new Vue({
+    el:"#vueMountedHook",
+    data:{
+        items:[],
+        item:{
+            id:0,
+            name:"",
+            subTitle:"",
+            originalPrice:"",
+            promotePrice:"",
+            stock:"",
+            category:{
+                id:0
+            }
+        },
+        category:"" //  保存 getCategory 获得的 categor 实体
+    },
+    mounted() {
+            this.getCategory();
+            this.listGood();
+    },
+    methods:{
+        getCategory:function(){
+            axios.get(categoryURL)
+            .then(function(response){
+                vue.category = response.data;
+            })
+            .catch(function (error){
+                    console.log(error.message);
+                    console.log("获取 Category 数据失败");
+            });
+        },
+
+        listGood:function(){
+            axios.get(listAllURL)
+            .then(response =>{
+                vue.items = response.data;
+            })
+            .catch(function(error){
+                console.log(error.message);
+                console.log("获取该分类下的所有商品失败");
+            });
+        },
+
+        add:function(){
+            if( !isEmpty(this.item.name,"商品名称") ){
+                    return;
+            }
+            if( !isEmpty(this.item.subTitle,"商品描述") ){
+                    return;
+            }
+            if( !isNumber(this.item.originalPrice,"原价") ){
+                    return;
+            }
+            if( !isNumber(this.item.promotePrice,"促销价") ){
+                    return;
+            }
+            if( !isInt(this.item.stock,"库存") ){
+                    return;
+            }
+            this.item.category.id = cid;
+            axios.post(postURL,this.item)
+            .then( response => {
+                console.log(response.data);
+                vue.listGood();
+                vue.item = {
+                    id:0,
+                    name:"",
+                    subTitle:"",
+                    originalPrice:"",
+                    promotePrice:"",
+                    stock:"",
+                    category:{
+                        id:0
+                    }
+                };
+            }).catch(error =>{
+                console.log(error.message);
+            });
+        },
+
+        deleteGood:function(good_id){
+            if ( isDeleteLink() ){
+                    return;
+            }
+            let deleteURL = "goods/" + good_id;
+            axios.delete(deleteURL).then(response =>{
+                console.log(response.data);
+                vue.listGood();
+            }).catch(error =>{
+                console.log(error.message);
+                
+            })
+        }
+    }
+});
+
+</script>
+</body>
+</html>
 
 
 

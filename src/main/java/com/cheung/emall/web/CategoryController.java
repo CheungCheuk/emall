@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
 // import org.springframework.web.bind.annotation.PutMapping;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,19 +66,22 @@ public class CategoryController {
     public Category get(@PathVariable("id") int id)throws Exception{
         return categoryService.get(id);
     }
-    @PutMapping("/categories/{id}")
-    public Category updCategory(Category category, MultipartFile image, HttpServletRequest request)throws NullPointerException{
-        String categoryName = request.getParameter("name");
-        category.setName(categoryName);
-        categoryService.update(category);
+
+    @PutMapping("/categories/{id}") //  如果上串的图片含有 二进制文件，则不能使用 @RequestBody，否则报错：Content type 'multipart/form-data;boundary=----WebKitFormBoundaryBbKRwS9TvSpKp7Gs;charset=UTF-8' not supported
+    public Category updCategory(@PathVariable("id")int id, MultipartFile image, HttpServletRequest request)
+    throws Exception{
+        // String categoryName = request.getParameter("name");  //  HttpServletRequest request
+        // category.setName(categoryName);
+        Category saveCateogy =  categoryService.get(id);    //  这种写法才是正确的 RESTful 风格写法
+        saveCateogy.setName(request.getParameter("name"));
         try {
             if ( image != null) {
-                saveImage(category, image, request);
+                saveImage(saveCateogy, image, request);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return category;
+        return categoryService.update(saveCateogy);
     }
 
 //    @GetMapping("/categories")

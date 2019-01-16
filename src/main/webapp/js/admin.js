@@ -58,7 +58,7 @@ function getUrlParms(para) {
 /**
  * 判断是否数字
  */
-function checkNumber(value,content){
+function isNumber(value,content){
     if(value.length == 0){
         alert(content+"不能为空");
         return false;
@@ -73,7 +73,7 @@ function checkNumber(value,content){
 /**
  * 判断是否是整数
  */
-function checkInt(value,content){
+function isInt(value,content){
     if(value.length == 0){
         alert(content+"不能为空");
         return false;
@@ -89,10 +89,12 @@ function checkInt(value,content){
  * 判断是否删除
  */
 function isDeleteLink(){
+    
     var  confirmDelete = confirm("确认要删除");
     if(confirmDelete){
         return false;
     }
+
     return true;
 }
 
@@ -101,26 +103,26 @@ function isDeleteLink(){
  * 页面分页跳转
  * 跳转到第一页、最后一页或者前一页、后一页
  */
-function jump(page,vue){
-    if('first'==page && ! vue.pagination.first){
-        vue.list(0);
-    }
-    else if ('previous' == page && vue.pagination.hasPrevious) {
-        vue.list(vue.pagination.number-1);
-    }
-    else if ('next' == page && vue.pagination.hasNext) {
-        vue.list(vue.vue.pagination.number+1);
-    }
-    else if ('last' == page && vue.pagination.last){
-        vue.list(vue.pagination.totalPages-1);
-    }
-}
+// function jump(page,vue){
+//     if('first'==page && ! vue.pagination.first){
+//         vue.list(0);
+//     }
+//     else if ('previous' == page && vue.pagination.hasPrevious) {
+//         vue.list(vue.pagination.number-1);
+//     }
+//     else if ('next' == page && vue.pagination.hasNext) {
+//         vue.list(vue.vue.pagination.number+1);
+//     }
+//     else if ('last' == page && vue.pagination.last){
+//         vue.list(vue.pagination.totalPages-1);
+//     }
+// }
 
 /**
  * 跳转到指定页面
  */
-function jumpByNumber(start, vue){
-    if(start !== vue.pagination.number){
-        vue.list(start);
-    }
-}
+// function jumpByNumber(start, vue){
+//     if(start !== vue.pagination.number){
+//         vue.list(start);
+//     }
+// }
