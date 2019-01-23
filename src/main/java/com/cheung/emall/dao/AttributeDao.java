@@ -17,7 +17,8 @@ import org.springframework.data.repository.CrudRepository;
  * AttributeDao
  */
 public interface AttributeDao extends CrudRepository<Attribute,Integer>{
-    List<Attribute> findByCategory(Category category, Sort sort);   //  感觉这句会出问题
+    List<Attribute> findByCategory(Category category, Sort sort);
+    List<Attribute> findByCategory(Category category);
 }
 
 

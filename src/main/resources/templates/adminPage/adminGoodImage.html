@@ -145,6 +145,8 @@ var vue = new Vue({
             .then(response =>{
                 vue.good = response.data;
                 vue.category = vue.good.category;
+                console.log(response);
+                
             }).catch(error =>{
                 console.log(error);
             });

@@ -54,6 +54,12 @@ public class AttributeServiceImpl  implements AttributeService{
         return attributeDao.findByCategory(category,sort);  //  可能会出 bug
 
     }
+    @Override
+    public List<Attribute> listByCategory(Category category) {
+        return attributeDao.findByCategory(category);
+    }
+
+
 
     
 }

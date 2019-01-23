@@ -59,6 +59,10 @@ public class AdminPageController {
         return "adminPage/adminGoodImage";
     }
     
+    @GetMapping("/edit_attributeValue")
+    public String listAttributeValue(){
+        return "adminPage/editAttributeValue";
+    }
 
     @GetMapping("/admin_indent")
     public String listIndent(){
@@ -69,12 +73,6 @@ public class AdminPageController {
     public String listUser(){
         return "adminPage/adminUser";
     }
-
-    @GetMapping("/edit_attributevalue")
-    public String listAttributeValue(){
-        return "adminPage/editAttributeValue";
-    }
-
     
 
 }

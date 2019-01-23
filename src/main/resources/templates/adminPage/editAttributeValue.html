@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- <head th:include="/publicPage/adminPage/Header::html(')" ></head> -->
+<head th:include="/publicPage/adminPage/Header::html('编辑商品属性')" ></head>
+<body>
+<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+
+<div id="vueMountedHook" >
+    <ol class="breadcrumb">
+        <li><a href="admin_category">所有分类</a></li>
+        <!-- -->
+        <li class="active">
+                <a v-bind:href="'admin_good?cid='+category.id"> 
+                        {{category.name}}
+                </a>
+        </li>
+        <li class="active">{{good.name}}</li>
+        <li class="active">编辑商品属性</li>
+    </ol>
+
+    <div class="editPVDiv">
+        <div v-for="item in items" class="eachPV">
+            <span class="pvName" >{{item.attribute.name}}</span>
+            <span class="pvValue">
+                <input 
+                    class="pvValue" 
+                    v-bind:id="'attribute_values_id'+item.id" 
+                    type="text" 
+                    v-model="item.value" 
+                    @keyup="updateAttributeValue(item)">
+            </span>
+            <span v-if="updateFailed">
+                更新失败
+            </span>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+
+</div>
+
+<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+<script>
+    var vue = new Vue({
+        el:"#vueMountedHook",
+        data() {
+            return{
+                items:[],
+                // item:{
+                //     id:0,
+                //     value:"",
+
+                // },
+                good:{
+                    id:"",
+                    name:""
+                },
+                category:{
+                    id:"",
+                    name:""
+                },
+                updateFailed:false
+            }
+        },
+        mounted(){
+            this.getGoodAndCategory();
+            this.listAttributeValue();
+        },
+        methods:{
+            getGoodAndCategory:function(){
+                let url = "goods/" + getUrlParms("good_id");
+                axios.get(url).then( response =>{
+                    vue.good.id = response.data.id;
+                    vue.good.name = response.data.name;
+                    vue.category = response.data.category;
+                    console.log(response.data);
+                }).catch( error =>{
+                    console.log(error);
+                });
+            },
+
+            listAttributeValue:function(){
+                let url = "goods/" + getUrlParms("good_id") + "/attribute_values";
+                
+                axios.get(url).then( response => {
+                    vue.items = response.data;
+                }).catch( error =>{
+                    console.log(error);
+                });
+            },
+
+            updateAttributeValue:function(item){
+                // let url = "/attribute_values";   导致错误，多了 “/”
+                let url = "attribute_values";
+                
+                axios.put(url, item).then( response => {
+                    console.log(response);
+                }).catch( error => {
+                    console.log(error);
+                    vue.updateFailed = true;
+                });
+
+            }
+        }
+    });
+</script>
+</body>
+</html>
