@@ -104,7 +104,8 @@ public class CategoryController {
  */
     public void saveImage(Category category, MultipartFile uploadedImage, HttpServletRequest request)
             throws IOException{
-        File serverImageFolder = new File(request.getServletContext().getRealPath("img/category"));
+        //  并没有新建文件！再查查 api
+        File serverImageFolder = new File(request.getServletContext().getRealPath("img/category")); 
         File serverImage = new File(serverImageFolder,category.getId()+".jpg"); //  对图片命名
         //  图片目录不存在，则创建该目录
         if ( !serverImageFolder.getParentFile().exists()){

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/publicPage/adminPage/Header::html('产品管理')" ></head>
+<body>
+<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+<div id="vueMountedHook" >
+    <ol class="breadcrumb">
+        <li><a href="admin_category">所有分类</a></li>
+        <!-- getGood()函数的作用，填充该位置 -->
+        <li><a :href="'admin_good?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">{{good.name}}</li>
+        <li class="active">商品图片管理</li>
+    </ol>
+
+    <table class="addPictureTable" align="center">
+        <tr>
+            <td class="addPictureTableTD">
+                <div>
+                    <div class="panel panel-warning addPictureDiv">
+                        <div class="panel-heading">添加商品<b class="text-primary"> 单个 </b>图片</div>
+                        <div class="panel-body">
+                            <table class="addTable">
+                                <tr>
+                                    <td>请选择本地图片 尺寸400X400 为佳</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="singlePic" type="file" @change="setShrinkImage($event)" name="image" />
+                                    </td>
+                                </tr>
+                                <tr class="submitTR">
+                                    <td align="center">
+                                        <button type="submit" @click="addShrinkImage" class="btn btn-success">提 交</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover  table-condensed">
+                        <thead>
+                        <tr class="success">
+                            <!-- <th>ID</th> -->
+                            <th>缩略图</th>
+                            <th>删除</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="image in shrinkImages">
+                            <!-- <td>{{pi.id}}</td> -->
+                            <td>
+                                <a title="点击查看原图" v-bind:href="'img/goodShrink/'+image.id+'.jpg'">
+                                    <img height="50px" :src="'img/goodShrink/'+image.id+'.jpg'">
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" @click="deleteShrinkImage(image.id)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+            <td class="addPictureTableTD">
+                <div>
+                    <div class="panel panel-warning addPictureDiv">
+                        <div class="panel-heading">添加商品<b class="text-primary"> 详情 </b>图片</div>
+                        <div class="panel-body">
+                            <table class="addTable">
+                                <tr>
+                                    <td>请选择本地图片 宽度790  为佳</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="detailPic" type="file" @change="setDetailImage($event)" name="image" />
+                                    </td>
+                                </tr>
+                                <tr class="submitTR">
+                                    <td align="center">
+                                        <button type="submit" @click="addDetailImage" class="btn btn-success">提 交</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover  table-condensed">
+                        <thead>
+                        <tr class="success">
+                            <!-- <th>ID</th> -->
+                            <th>商品详情图片缩略图</th>
+                            <th>删除</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="image in detailImages">
+                            <!-- <td>{{pi.id}}</td> -->
+                            <td>
+                                <a title="点击查看原图" :href="'img/goodDetail/'+image.id+'.jpg'">
+                                    <img height="50px" :src="'img/goodDetail/'+image.id+'.jpg'">
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" @click="deleteDetailImage(image.id)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+
+<script>
+//  @GetMapping("/goods/{good_id}/goodImages")
+
+
+var good_id = getUrlParms("good_id");
+
+var vue = new Vue({
+    el:"#vueMountedHook",
+    data:function(){
+        return{
+            good:"",
+            category:"",
+            uploadedShrinkImage:"",
+            uploadedDetailImage:"",
+            shrinkImages:[],
+            detailImages:[]
+        }
+    },
+    mounted(){
+        this.getGood();
+        this.getShrinkImages();
+        this.getDetailImages();
+    },
+    methods:{
+        getGood:function(){
+            let url = "goods/"+good_id;  //  @GetMapping("/goods/{id}")
+            axios.get(url)
+            .then(response =>{
+                vue.good = response.data;
+                vue.category = vue.good.category;
+            }).catch(error =>{
+                console.log(error);
+            });
+        },
+        getShrinkImages:function(){
+            //  @GetMapping("/goods/{good_id}/goodImages")
+            //  @PathVariable("good_id") int goodId, @RequestParam("type") String type)
+            let url = "goods/" + good_id + "/goodImages?type=shrink"; 
+            axios.get(url)
+            .then(response =>{
+                vue.shrinkImages = response.data;
+            })
+            .catch( error =>{
+                console.log(error);
+            });
+        },
+        getDetailImages:function(){
+            let url = "goods/" + good_id + "/goodImages?type=detail";
+            axios.get(url).then( response =>{
+                vue.detailImages = response.data;
+            }).catch( error =>{
+                console.log(error);
+            });
+        },
+
+        addShrinkImage:function(){  
+            //  @PostMapping("/goodImages")
+            //  @RequestParam("good_id") int goodId, @RequestParam("type") String type,
+            if ( !isEmpty(this.uploadedShrinkImage,"缩略图")) {
+                    return;
+            }
+            let url = "goodImages?type=shrink&good_id=" + good_id;
+
+            let formdata = new FormData();
+            formdata.append("uploadedImage",this.uploadedShrinkImage);
+
+            axios.post(url,formdata).then( response => {
+                console.log("upload shrink images success");
+                vue.getShrinkImages();
+                // vue.$data.uploadedShrinkImage = ""; //  此处为何是 null vue， 而不是 “”，将这句注释掉，因为没什么用
+            }).catch( error =>{
+                console.log(error);
+            });
+
+        },
+        deleteShrinkImage:function(id){   //  @DeleteMapping("/goodImages{id}")
+            if ( isDeleteLink() ){
+                    return;
+            }
+            let url = "goodImages/" + id;
+
+            axios.delete(url).then( response =>{
+                vue.getShrinkImages();
+            }).catch( error =>{
+                console.log(error);
+            })
+        },
+        addDetailImage:function(){
+            if ( !isEmpty(this.uploadedDetailImage,"详情图")) {
+                return;
+            }
+            let url = "goodImages?type=detail&good_id=" + good_id;
+
+            let formData = new FormData();
+            formData.append("uploadedImage", this.uploadedDetailImage);
+
+            axios.post(url,formData).then( response =>{
+                console.log(response);
+                vue.getDetailImages();
+                // vue.uploadedDetailImage = null;
+            }).catch( error =>{
+                console.log(error);
+            });
+
+        },
+        deleteDetailImage:function(id){
+            if ( isDeleteLink() ){
+                    return;
+            }
+            let url = "goodImages/" + id;
+            axios.delete(url).then( response =>{
+                vue.getDetailImages();
+            }).catch( error =>{
+                console.log(error);
+            })
+        },
+        setShrinkImage:function(event){
+            this.uploadedShrinkImage = event.target.files[0];  //  用 vue 代替 this 是否可行
+        },
+        setDetailImage:function(){
+            this.uploadedDetailImage = event.target.files[0];
+        }
+    }
+});
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

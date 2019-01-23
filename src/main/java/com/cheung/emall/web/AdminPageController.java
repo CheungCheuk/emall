@@ -54,6 +54,12 @@ public class AdminPageController {
         return "adminPage/editGood";
     }
 
+    @GetMapping("/admin_goodImage")
+    public String listImage(){
+        return "adminPage/adminGoodImage";
+    }
+    
+
     @GetMapping("/admin_indent")
     public String listIndent(){
         return "adminPage/adminIndent";

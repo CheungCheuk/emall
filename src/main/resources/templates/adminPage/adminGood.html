@@ -103,20 +103,22 @@ var listAllURL = categoryURL + "/goods";        //  @GetMapping("/categories/{ci
 
 var vue = new Vue({
     el:"#vueMountedHook",
-    data:{
-        items:[],
-        item:{
-            id:0,
-            name:"",
-            subTitle:"",
-            originalPrice:"",
-            promotePrice:"",
-            stock:"",
-            category:{
-                id:0
+    data:function(){
+            return{
+                items:[],
+                item:{
+                    id:0,
+                    name:"",
+                    subTitle:"",
+                    originalPrice:"",
+                    promotePrice:"",
+                    stock:"",
+                    category:{
+                        id:0
+                    }
+                },
+                category:"" //  保存 getCategory 获得的 categor 实体
             }
-        },
-        category:"" //  保存 getCategory 获得的 categor 实体
     },
     mounted() {
             this.getCategory();
@@ -139,7 +141,7 @@ var vue = new Vue({
             .then(response =>{
                 vue.items = response.data;
             })
-            .catch(function(error){
+            .catch(error => {
                 console.log(error.message);
                 console.log("获取该分类下的所有商品失败");
             });

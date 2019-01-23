@@ -12,8 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+// import org.springframework.data.annotation.Transient;
 
 /**
  * Good
@@ -38,6 +41,23 @@ public class Good {
     private float promotePrice;
     private int stock;
     private Date createDate;
+
+    @Transient
+    private GoodImage shrinkImage;
+
+    /**
+     * @param goodImage the goodImage to set
+     */
+    public void setShrinkImage(GoodImage shrinkImage) {
+        this.shrinkImage = shrinkImage;
+    }
+
+    /**
+     * @return the goodImage
+     */
+    public GoodImage getShrinkImage() {
+        return shrinkImage;
+    }
 
     /**
      * @return the category
