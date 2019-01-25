@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cheung.emall.pojo.Good;
 import com.cheung.emall.service.CategoryService;
+import com.cheung.emall.service.GoodImageService;
 import com.cheung.emall.service.GoodService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoodController {
     @Autowired GoodService goodService;
     @Autowired CategoryService categoryService;
+    @Autowired GoodImageService goodImageService;
 
 
     @PostMapping("/goods")
@@ -52,8 +54,10 @@ public class GoodController {
 
 
     @GetMapping("/categories/{cid}/goods")
-    public List<Good> listGoods( @PathVariable("cid") int cid ) throws Exception{
-        return goodService.list(cid);
+    public List<Good> listGoods( @PathVariable("cid") int category_id ) throws Exception{
+        List<Good> goods = goodService.list(category_id);
+        goodImageService.setMultipleShrinkImage(goods);
+        return goods;
     }
 
     @GetMapping("/goods/{id}")

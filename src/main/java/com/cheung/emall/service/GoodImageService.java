@@ -1,6 +1,3 @@
-
-
-
 package com.cheung.emall.service;
 
 import java.util.List;
@@ -46,21 +43,21 @@ public class GoodImageService {
     }
 
     /**
-     * 为每个 商品（Good）设置单个图片
+     * 为一个商品，设置一个缩略图
      */
     public void setOneShrinkImage(Good good) {
         List<GoodImage> shrinkImage = findShrinkImage(good);
         if ( !shrinkImage.isEmpty() ) {
             good.setShrinkImage(shrinkImage.get(0));
         } 
-        // 在产品没有设置图片之前，可以在订单管理的订单项中查看对应的图片
+        // 在产品没有设置图片之前，可以在 订单管理 的订单项中查看对应的图片
         // else {
         //     good.setShrinkImage(new GoodImage());
         // }
     }
 
     /**
-     * 为每个 商品（Good） 设置多个图片
+     * 为多个商品，设置一个缩略图
      */
     public void setMultipleShrinkImage(List<Good> goods){
         for (Good good : goods) {
