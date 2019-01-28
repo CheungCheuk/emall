@@ -37,9 +37,9 @@ public class IndentItemService {
      * @param indents List
      * @return void
      */
-    public void setMultipleIndent(List<Indent> indents){
+    public void setEachIndent(List<Indent> indents){
         for (Indent indent : indents) {
-            setSingleIndent(indent);
+            setEachIndentItem(indent);
         }
     }
     /**
@@ -50,15 +50,18 @@ public class IndentItemService {
      * @param indent Indent
      * @return void
      */
-    public void setSingleIndent(Indent indent){
+    public void setEachIndentItem(Indent indent){
         List<IndentItem> indentItems = indentItemDao.findByIndentOrderByIdDesc(indent);
         float eachItemTotalPrice = 0;
         int eachItemAmount = 0;
+        
         for (IndentItem indentItem : indentItems) {
             eachItemTotalPrice += indentItem.getNumber() * indentItem.getGood().getPromotePrice();
             eachItemAmount = indentItem.getNumber();
-            goodImageService.findShrinkImage(indentItem.getGood());
+            // goodImageService.findShrinkImage(indentItem.getGood());  bug来源，导致没有传输到图片到客户端
+            goodImageService.setOneShrinkImage(indentItem.getGood());
         }
+
         indent.setIndentItems(indentItems);
         indent.setEachItemAmount(eachItemAmount);
         indent.setEachItemTotalPrice(eachItemTotalPrice);

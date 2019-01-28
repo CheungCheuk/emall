@@ -23,7 +23,10 @@ public class IndentController {
 
     @GetMapping("/indents")
     public List<Indent> getAllIndent() throws Exception{
-        return indentService.listIndent();
+        List<Indent> indents = indentService.listIndent();
+        indentItemService.setEachIndent(indents);
+        indentService.avoidUnlimitedRecursion(indents);
+        return indents;
     }
     /**
      * 订单发货功能

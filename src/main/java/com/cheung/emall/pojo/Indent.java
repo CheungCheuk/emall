@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.cheung.emall.service.IndentService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -50,20 +51,45 @@ public class Indent {
     @Transient
     private int eachItemAmount;
     @Transient
-    private String statusDesc;
+    private String statusSituation;
     
     /**
      * @param statusDesc the statusDesc to set
      */
-    public void setStatusDesc(String statusDesc) {
-        this.statusDesc = statusDesc;
+    public void setStatusDesc(String statusSituation) {
+        this.statusSituation = statusSituation;
     }
     /**
      * @return the statusDesc
      */
     
     public String getStatusDesc() {
-        return statusDesc;
+        if (null != statusSituation) {
+            return statusSituation;
+        }
+        String situation = "状态未知";
+        switch (status) {
+            case IndentService.WAITING_DELIVERY:
+                situation = "待发货";
+                break;
+            case IndentService.WAITING_PAYMENT:
+                situation = "待支付";
+                break;
+            case IndentService.WAITING_CONFIRMATION:
+                situation = "待确认收货";
+                break;
+            case IndentService.WAITING_COMMENT:
+                situation = "待评价";
+            case IndentService.FINISH:
+                situation = "完成";
+            case IndentService.DELETE:
+                situation = "删除";
+            default:
+                situation = "状态未知";
+                break;
+        }
+        statusSituation = situation;
+        return statusSituation;
     }
 
 

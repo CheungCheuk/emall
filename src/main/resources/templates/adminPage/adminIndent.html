@@ -120,13 +120,18 @@ var vue = new Vue({
     },
     filters:{
         formatDateFilter(value, formatString){
-
+            if (null === value) {
+                return "";
+            }
+            formatString = formatString || 'YYYY-MM-DD HH:mm:ss';
+                moment(value).format(formatString);
         }
     },
     mounted(){
         let url = "indents";
         axios.get(url).then( response => {
             vue.indents = response.data;
+            console.log(response);
         }).catch( error =>{
             console.log(error);
         });
@@ -143,7 +148,6 @@ var vue = new Vue({
                 $(event.target).hide();
             }).catch( error =>{
                 console.log(error);
-                
             }); 
         }
     }

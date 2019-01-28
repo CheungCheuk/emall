@@ -41,7 +41,10 @@
                 <td><a v-bind:href="'edit_good?good_id=' + item.id "><span class="glyphicon glyphicon-edit"></span></a></td>
                 <td><a v-bind:href="'admin_goodImage?good_id=' + item.id "><span class="glyphicon glyphicon-picture"></span></a></td>
                 <td>
-                    <img v-if= " null != item.shrinkImage " v-bind:src="'img/goodShrink/' + item.shrinkImage.id + '.jpg'" alt="" srcset="" width="40px">
+                    <img 
+                        v-if= " null !== item.shrinkImage " 
+                        v-bind:src=" 'img/goodShrink/' + item.shrinkImage.id + '.jpg'" 
+                        alt="" srcset="" width="40px">
                 </td>
                 <td><a href=""  @click="deleteGood(item.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
             </tr>
