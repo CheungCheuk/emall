@@ -16,6 +16,14 @@
 *.iml
 *.ipr
 
+### Vscode ###
+.DS_Store
+.vscode
+.gitignore
+mvnw
+mvnw.cmd
+.mvn/wrapper
+
 ### NetBeans ###
 /nbproject/private/
 /build/
