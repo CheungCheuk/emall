@@ -35,6 +35,7 @@ public class CategoryController {
     public List<Category> listCategory() throws Exception{
         return categoryService.listCategory();
     }
+
     @PostMapping("/categories")
     public Category add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
@@ -105,11 +106,12 @@ public class CategoryController {
     public void saveImage(Category category, MultipartFile uploadedImage, HttpServletRequest request)
             throws IOException{
         //  并没有新建文件！再查查 api
-        File serverImageFolder = new File(request.getServletContext().getRealPath("img/category")); 
+        File serverImageFolder = new File(request.getServletContext().getRealPath("img/category")); //..bug：无法创建 category 目录
         File serverImage = new File(serverImageFolder,category.getId()+".jpg"); //  对图片命名
         //  图片目录不存在，则创建该目录
-        if ( !serverImageFolder.getParentFile().exists()){
-            serverImageFolder.getParentFile().mkdirs();
+        // !serverImageFolder.getParentFile().exists()  fix bug
+        if (!serverImage.getParentFile().exists() ){
+            serverImage.getParentFile().mkdirs();
         }
         //·将上传的图片，保存到服务器的指定位置："img/category"
         uploadedImage.transferTo(serverImage);
