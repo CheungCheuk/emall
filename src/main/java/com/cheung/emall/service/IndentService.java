@@ -1,16 +1,10 @@
-
-
-
-
 package com.cheung.emall.service;
-
 import com.cheung.emall.pojo.Indent;
 import com.cheung.emall.pojo.IndentItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.cheung.emall.dao.IndentDao;
-
 import java.util.List;
 
 /**
@@ -34,12 +28,13 @@ public class IndentService {
         List<Indent> indents = indentDao.findAll(sort);
         return indents;
     }
+
     /**
      * 因为每个订单 Indent 中包含多个 IndentItem，
      * 每个 IndentItem 中对应一个 Indent，
      * 使用Restful风格时，这些属性，会被JSON化，
      * 产生无限递归，导致系统崩溃
-     * @param indnets {@link List}
+     * @param Indent
      */
     public void avoidUnlimitedRecursion(List<Indent> indents){
         for (Indent indent : indents) {
