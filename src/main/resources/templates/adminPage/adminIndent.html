@@ -70,7 +70,7 @@
                 </tr>
 
                 <!-- 显示每个订单下的订单项 -->
-                <tr class="indentPageIndentItemTR"  :id=" 'indentItemsTR'+indent.id">
+                <tr class=" indentPageIndentItemTR "  v-bind:id=" 'indentItemsTR' + indent.id ">
                     <td colspan="10" align="center">
                         <div  class="orderPageOrderItem">
                             <table width="800px" align="center" class="orderPageOrderItemTable">
@@ -124,7 +124,7 @@ var vue = new Vue({
                 return "";
             }
             formatString = formatString || 'YYYY-MM-DD HH:mm:ss';
-                moment(value).format(formatString);
+                return moment(value).format(formatString);  //  fix bug: 忘记加 return
         }
     },
     mounted(){
@@ -137,9 +137,10 @@ var vue = new Vue({
         });
     },
     methods:{
-        showIndentItems:function(indent){
+        showIndentItems: function(indent){
             let id = indent.id;
-            $("#indentItemsTR" + indent.id).show();
+            // $("#indentItemsTR" + indent.id).show();
+            $( "#indentItemsTR" + indent.id ).show();
         },
         deliveryIndent:function(indent,event){
             axios.put("indentDelivery/" + indent.id)

@@ -56,14 +56,14 @@ public class Indent {
     /**
      * @param statusDesc the statusDesc to set
      */
-    public void setStatusDesc(String statusSituation) {
+    public void setStatusSituation(String statusSituation) {
         this.statusSituation = statusSituation;
     }
     /**
      * @return the statusDesc
      */
     
-    public String getStatusDesc() {
+    public String getStatusSituation() {
         if (null != statusSituation) {
             return statusSituation;
         }
