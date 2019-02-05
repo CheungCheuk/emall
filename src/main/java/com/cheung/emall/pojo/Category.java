@@ -1,7 +1,7 @@
 package com.cheung.emall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import java.util.List;
 import javax.persistence.*;
 
 @Entity                 //  实体类
@@ -13,6 +13,33 @@ public class Category {
     @Column(name = "id")                                //  对应的数据库字段名
     int id;
     String name;
+
+    //  一个分类下的所有商品
+    @Transient
+    List<Good> goods;
+    //  矩阵商品列表，用于展示商品页面
+    @Transient
+    List<List<Good>> matrixGoods;
+
+
+    public List<Good> getGoods() {
+        return this.goods;
+    }
+
+    public void setGoods(List<Good> goods) {
+        this.goods = goods;
+    }
+
+
+    public List<List<Good>> getMatrixGoods() {
+        return this.matrixGoods;
+    }
+
+    public void setMatrixGoods(List<List<Good>> matrixGoods) {
+        this.matrixGoods = matrixGoods;
+    }
+
+    
 
     public int getId() {
         return id;
