@@ -24,6 +24,7 @@ public class ForeRESTController {
         List<Category> categories = categoryService.listCategory();
         goodService.setCategoryInGood(categories);
         goodService.fillMatrixGoods(categories);
+        categoryService.avoidUnlimitedRecursionInCategory(categories);
         return categories;
     }
 }

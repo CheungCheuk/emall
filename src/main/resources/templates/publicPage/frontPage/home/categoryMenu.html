@@ -1,0 +1,19 @@
+<div th:fragment="html"> 
+    <div class="categoryMenu">
+        <div 
+            v-bind:cid="category.id" class="eachCategory" 
+            v-for="category in categories">
+            <span class="glyphicon glyphicon-link"></span>
+                <a v-bind:href=" 'category?cid=' + category.id">
+                            {{category.name}}
+                </a>
+        </div>
+    </div> 
+</div>
+
+
+
+
+
+
+

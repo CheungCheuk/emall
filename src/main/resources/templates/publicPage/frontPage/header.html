@@ -1,0 +1,51 @@
+<template th:fragment="html" xmlns:th="http://www.thymeleaf.org">
+    <!-- <script src="js/jquery/2.0.0/jquery.min.js"></script> -->
+    <!-- <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script> -->
+    <script src="js/front.js"></script>
+    <script src="js/vue/2.5.16/vue.js"></script>
+    <script src="js/axios/0.17.1/axios.js"></script>
+    <script src="js/moment/2.22.2/moment.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/fore/style.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    
+    <!-- <title th:text="${title}" ></title> -->
+    <script>
+        function isEmpty(id,name) {
+            var value = $("#"+id).val();
+            if ( value.length == 0) {
+                $("#"+id)[0].focus();
+                return false;
+            }
+            return true;
+        }
+
+        // 截取字符串
+        VUe.filter("subStringFilter", function (value, start, end) {
+            if (!value) {
+                return "";
+            }
+            return value.substring(start,end);
+        });
+
+        // 格式化金额
+        Vue.filter("formatMoneyFilter", function (value) {
+            return formatMoney(value);
+        });
+
+        // 格式化日期
+        Vue.filter("formatDateFilter", function (value, formatString) {
+            if (null == value) {
+                return "";
+            }
+            formatString = formatString || "YYYY-MM-DD HH:mm:ss";
+            return moment(value).format(formatString);
+        });
+
+    </script>
+</template>
+
+
+
