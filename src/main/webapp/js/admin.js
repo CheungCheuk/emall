@@ -12,7 +12,7 @@ function isEmpty(value, content){
 
 /**
  * 获取 url 中的参数
- * @param {*} id 
+ * @param {*}  
  */
 function getUrlParms(para) {
     //  页面URL的查询部分字符串，例如：edit_category?id=85

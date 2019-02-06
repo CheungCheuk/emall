@@ -1,0 +1,14 @@
+<div th:fragment="html">
+        <div  v-bind:cid="category.id" class="productsAsideCategorys" 
+                v-for="category in categories">
+            <div class="row show1" 
+                v-for="goods in category.matrixGoods">
+                        <a  v-for="good in goods"
+                            v-bind:href="'good?good_id=' + good.id" 
+                            v-if="good.subTitle.length!=0">
+                            {{good.subTitle | subTitleFilter}}
+                        </a>     
+                <div class="seperator"></div>
+            </div>
+        </div>
+    </div>
