@@ -12,15 +12,15 @@
             <div id="footer_desc" class="footer_desc">
                 <div class="descColumn">
                     <span class="descColumnTitle">购物指南</span>
-                    <a href="#nowhere" >免费注册</a>
+                    <a href="" >免费注册</a>
                     <!-- <a href="#nowhere" >开通支付宝</a> -->
                     <!-- <a href="#nowhere" >支付宝充值</a> -->
                 </div>
                 <div class="descColumn">
                     <span class="descColumnTitle">保障</span>
-                    <a href="#nowhere" >发票保障</a>
-                    <a href="#nowhere" >售后规则</a>
-                    <a href="#nowhere" >缺货赔付</a>
+                    <a href="" >发票保障</a>
+                    <a href="" >售后规则</a>
+                    <a href="" >缺货赔付</a>
                 </div>
                 <div class="descColumn">
                     <span class="descColumnTitle">支付方式</span>
@@ -103,4 +103,31 @@
                 </div>
             </div>
         </div>
+        <script>
+            var vue = new Vue({
+                    el: '#vueHook',
+                    data(){
+                        return{
+                            categories:[]
+                        }
+                    },
+                    mounted(){
+                        // linkDefaultActions();    给一些超链接加上事件，已废弃
+                        axios.get("forehome").then( response => {
+                            vue.categories = response.data;
+                            vue.$nextTick( function() {
+                                // homePageRegisterListeners(); 
+                            })
+                        });
+                    },
+                    filters:{
+                        subTitleFilter:function(value) {
+                            if (!value) {         //如果为空，则返回空字符串
+                                return ''; 
+                            }
+                            return value.split(" ")[0];     //根据空格拆分，并且只获取数组第一个值
+                        }
+                    }
+                });
+        </script>
         <div th:fragment="html">
