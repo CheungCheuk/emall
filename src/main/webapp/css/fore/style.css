@@ -244,9 +244,15 @@ img.catear {
 }
 
 img.logo {
-	position: absolute;
+	/* position: absolute;
 	left: 0px;
-	top: 30px;
+	top: 30px; */
+	margin-top: 2px;
+	display: block;
+	width: 134px;
+	height: 42px;
+	background-size: 134px 42px;
+
 /* 	z-index:-1; */
 }
 

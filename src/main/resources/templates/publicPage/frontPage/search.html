@@ -1,12 +1,12 @@
 <div class th:fragment="html">
         <a th:href="${application.contextPath}">
-            <!-- <img id="logo" src="img/site/logo.gif" class="logo"> -->
+            <img id="logo" src="img/site/logoj.gif" class="">
         </a>
         <form action="search" method="get" >
+                
             <div class="searchDiv">
                 <input name="keyword" type="text" placeholder="Apple">
                 <button  type="submit" class="searchButton">搜索</button>
-                
                 <!-- <div class="searchBelow">
                     <span th:each=" c,status: ${application.categories_below_search} " 
                             th:if="${status.index >= 5 && status.index <= 8}">
@@ -14,7 +14,6 @@
                         <span th:if="${status.index != 8}">|</span>
                     </span>
                 </div> -->
-
             </div>
         </form>
     </div>
