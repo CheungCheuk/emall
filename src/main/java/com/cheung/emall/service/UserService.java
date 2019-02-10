@@ -20,5 +20,20 @@ public class UserService {
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         return userDao.findAll(sort);
     }
-    
+    // frontEnd
+    /**
+     * 用户名冲突返回true，
+     * 否则返回false；
+     */
+    public Boolean isUserConflict(String name){
+        //  数据库中不存在该用户名
+        if ( null == userDao.findByName(name) ){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public void addUser(User user){
+        userDao.save(user);
+    }
 }

@@ -1,0 +1,132 @@
+<div th:fragment="html">
+        <div class="registerDiv">
+            <div class="registerErrorMessageDiv">
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    </button>
+                    <span class="errorMessage"></span>
+                </div>
+            </div>
+    
+            <table class="registerTable" align="center">
+                <tr>
+                    <td  class="registerTip registerTableLeftTD">设置昵称</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="registerTableLeftTD">登陆名</td>
+                    <td  class="registerTableRightTD">
+                        <input 
+                            v-model="user.name" 
+                            placeholder="一旦设置，无法修改" > 
+                    </td>
+                </tr>
+                <tr>
+                    <td  class="registerTip registerTableLeftTD">设置登陆密码</td>
+                    <td  class="registerTableRightTD">登陆时验证，保护账号信息</td>
+                </tr>
+                <tr>
+                    <td class="registerTableLeftTD">登陆密码</td>
+                    <td class="registerTableRightTD">
+                        <input 
+                            v-model="user.password"  
+                            type="password"  
+                            placeholder="输入密码" > 
+                    </td>
+                </tr>
+                <tr>
+                    <td class="registerTableLeftTD">密码确认</td>
+                    <td class="registerTableRightTD">
+                        <input 
+                            v-model="user.repeatpassword"   
+                            type="password"  
+                            placeholder="再次输入密码以确认" > 
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td colspan="2" class="registerButtonTD">
+                        <a @click="register"><button>提   交</button></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <script>
+                    //ViewModel
+                    var vue = new Vue({
+                        el: '#vueHook',
+                        data(){
+                            return{
+                                result:[],
+                                user:{
+                                    name:"",
+                                    password:"",
+                                    repeatpassword:""
+                                }
+                            }   //                          uri:'foreregister',
+                        },
+                        // mounted:function(){
+                        //     // linkDefaultActions();
+                        // },
+                        methods: {
+                            register:function(){
+                                // var url =  this.uri;
+                                if( 0 == this.user.name.length ){
+                                    alert("请输入用户名");
+                                    // $("span.errorMessage").html("请输入用户名");
+                                    // $("div.registerErrorMessageDiv").css("visibility","visible");
+                                    return;
+                                }
+                                if( 0 == this.user.password.length ){
+                                    alert("请输入密码");
+                                    // $("span.errorMessage").html("请输入密码");
+                                    // $("div.registerErrorMessageDiv").css("visibility","visible");
+                                    return;
+                                }
+                                
+                                if( 0 == this.user.repeatpassword.length){
+                                    alert("请再次输入密码")
+                                    // $("span.errorMessage").html("请输入重复密码");
+                                    // $("div.registerErrorMessageDiv").css("visibility","visible");
+                                    return;
+                                }
+                                if( this.user.password != this.user.repeatpassword){
+                                    alert("两次输入密码不一致");
+                                    // $("span.errorMessage").html("重复密码不一致");
+                                    // $("div.registerErrorMessageDiv").css("visibility","visible");
+                                    return;
+                                }
+        
+                                axios.post("register",this.user).then( response => {
+                                    result = response.data;
+                                    
+                                    if( result.code === 0 ){
+                                        location.href = "registerSuccess";
+                                    }
+                                    else{
+                                        alert(result.message);
+                                        // $("span.errorMessage").html(result.message);
+                                        // $("div.registerErrorMessageDiv").css("visibility","visible");
+                                    }
+                                });
+                            }
+                        }
+                    });
+            </script>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

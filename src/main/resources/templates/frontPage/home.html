@@ -7,6 +7,33 @@
     <div th:replace="publicPage/frontPage/search::html" ></div>
     <div th:replace="publicPage/frontPage/home/homePage::html" ></div>
     <div th:replace="publicPage/frontPage/footer::html" ></div>
+    <script>
+        var vue = new Vue({
+                    el: '#vueHook',
+                    data(){
+                        return{
+                            categories:[]
+                        }
+                    },
+                    mounted(){
+                        // linkDefaultActions();    给一些超链接加上事件，已废弃
+                        axios.get("forehome").then( response => {
+                            vue.categories = response.data;
+                            vue.$nextTick( function() {
+                                // homePageRegisterListeners(); 
+                            })
+                        });
+                    },
+                    filters:{
+                        subTitleFilter:function(value) {
+                            if (!value) {         //如果为空，则返回空字符串
+                                return ''; 
+                            }
+                            return value.split(" ")[0];     //根据空格拆分，并且只获取数组第一个值
+                        }
+                    }
+                });
+    </script>
 </div>
 </body>
 </html>

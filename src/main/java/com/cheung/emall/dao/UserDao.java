@@ -14,4 +14,10 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface UserDao extends CrudRepository<User, Integer> {
     List<User> findAll(Sort sort);
+    // frontEnd
+
+    /**
+     * 根据用户名，返回一个用户实例
+     */
+    User findByName(String name);
 }

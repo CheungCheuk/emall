@@ -1,5 +1,7 @@
 package com.cheung.emall.util;
-
+/**
+ * 该类包含错误代码、错误信息和数据等，用以前端调试
+ */
 public class Result {
     public static int SUCCESS_CODE = 0;
     public static int FAIL_CODE = 1;
@@ -8,6 +10,9 @@ public class Result {
     String message;
     Object data;
 
+    /**
+     * 
+     */
     private Result (int code, String message, Object data){
         this.code = code;
         this.message = message;
@@ -22,6 +27,7 @@ public class Result {
         return  new Result(SUCCESS_CODE, "", data);
     }
 
+    
     public static Result fail(String message){
         return  new Result(FAIL_CODE, message, null);
     }
