@@ -435,7 +435,10 @@ div.simpleLogo {
 
 img.loginBackgroundImg {
 	display: block;
+	/* position: relative; */
+	/* width: 990px; */
 	margin: 0px auto;
+	background-color: #AD2317
 }
 
 div.loginDivInProductPageModalDiv {

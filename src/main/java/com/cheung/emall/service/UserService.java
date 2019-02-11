@@ -36,4 +36,19 @@ public class UserService {
     public void addUser(User user){
         userDao.save(user);
     }
+
+    /**
+     * 用户名和密码匹配，返回true。
+     * 不匹配，返回 flase
+     */
+    public Boolean isUserAndPasswordEqual (String name, String password){
+        // User user = userDao.findByNameAndPassword(name, password);
+        
+        if ( null != userDao.findByNameAndPassword(name, password) ){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }

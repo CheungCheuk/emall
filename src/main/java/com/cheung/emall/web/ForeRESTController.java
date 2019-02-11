@@ -2,6 +2,8 @@ package com.cheung.emall.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.cheung.emall.pojo.Category;
 import com.cheung.emall.pojo.User;
 import com.cheung.emall.service.CategoryService;
@@ -46,6 +48,17 @@ public class ForeRESTController {
         }
         userService.addUser(user);
         return Result.success();
+    }
 
+    @PostMapping("/login")
+    public Result login(@RequestBody User user, HttpSession session){
+        String tempName = user.getName();
+        String tempPassword = user.getPassword();
+        if ( userService.isUserAndPasswordEqual(tempName, tempPassword) ){
+            session.setAttribute("user", user);
+            return Result.success();
+        }else{
+            return Result.fail("账户密码不匹配");
+        }
     }
 }

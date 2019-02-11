@@ -1,0 +1,53 @@
+<div th:fragment="html">
+    <div id="loginDiv" style="position: relative">
+        <div class="simpleLogo">
+            <!-- <a th:href="${application.contextPath}">
+                <img src="img/site/logoj.gif">
+            </a> -->
+            <a href="/home">
+                <img src="img/site/logoj.gif">
+            </a>
+            <!-- <span>
+                欢迎登陆
+            </span> -->
+        </div>
+        <!-- width="1000" height="800" -->
+        <img id="loginBackgroundImg" class="loginBackgroundImg" src="img/site/backgroundJ.png" width="1190" height="600">
+        <div id="loginSmallDiv" class="loginSmallDiv">
+
+            <!-- <div class="loginErrorMessageDiv">
+                <div class="alert alert-danger" >
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                    <span class="errorMessage">22</span>
+                </div>
+            </div> -->
+
+            <div class = "login_acount_text">账户登录</div>
+            <div class = "loginInput" >
+                    <span class="loginInputIcon ">
+                        <span class=" glyphicon glyphicon-user"></span>
+                    </span>
+                <input 
+                    v-model="user.name" placeholder="账户" type="text">
+            </div>
+
+            <div class="loginInput " >
+                    <span class="loginInputIcon ">
+                        <span class=" glyphicon glyphicon-lock"></span>
+                    </span>
+                <input 
+                    v-model="user.password" type="password" placeholder="密码">
+            </div>
+            <span class="text-danger">请不要输入真实的账号密码</span><br><br>
+            <div>
+                <a class="notImplementLink" href="#nowhere">忘记登录密码</a>
+                <a href="register" class="pull-right">免费注册</a>
+            </div>
+            <div style="margin-top:20px">
+                <a @click="login">
+                    <button class="btn btn-block redButton" >登录</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

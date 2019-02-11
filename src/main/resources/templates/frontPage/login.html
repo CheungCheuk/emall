@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="publicPage/frontPage/header::html" ></head>
+<body>
+<div id="vueHook">
+    <div th:replace="publicPage/frontPage/loginPage::html" ></div>
+    <div th:replace="publicPage/frontPage/footer::html" ></div>
+</div>
+<script>
+        var vue = new Vue({
+            el:"#vueHook",
+            data(){
+                return{
+                    result:[],
+                    user:{
+                        name:"",
+                        password:""
+                    }
+                }
+            },
+            methods:{
+                login:function(){
+                    if ( 0 === this.user.name.length ){
+                        alert("请输入账户");
+                        return;
+                    }
+                    if ( 0 === this.user.password.length ){
+                        alert("请输入密码");
+                        return;
+                    }
+                    axios.post("login",this.user).then( response => {
+                        result = response.data;
+                        if ( result.code === 0 ){
+                            location.href = "home";
+                        }
+                    }).catch( error => {
+                        console.log(error.message);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

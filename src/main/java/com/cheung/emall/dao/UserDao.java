@@ -20,4 +20,13 @@ public interface UserDao extends CrudRepository<User, Integer> {
      * 根据用户名，返回一个用户实例
      */
     User findByName(String name);
+
+    /**
+     * 登陆验证
+     */
+    // User getByNameAndPassword(String name, String password);
+    User findByNameAndPassword(String name, String password);
+
+    
+    
 }

@@ -32,7 +32,11 @@ public class FontEndPageController {
     public String registerSuccess(){
         return "frontPage/register/registerSuccess";
     }
-    
+
+    @GetMapping("/login")
+    public String  login(){
+        return "frontPage/login";
+    }    
 
     
 }
