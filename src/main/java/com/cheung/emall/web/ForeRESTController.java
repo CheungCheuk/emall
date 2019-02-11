@@ -61,4 +61,6 @@ public class ForeRESTController {
             return Result.fail("账户密码不匹配");
         }
     }
+
+    
 }
