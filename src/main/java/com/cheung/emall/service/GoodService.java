@@ -19,6 +19,8 @@ public class GoodService {
     @Autowired GoodDao goodDao;
     @Autowired CategoryService categoryService;
     @Autowired GoodImageService goodImageService;
+    @Autowired IndentItemService indentItemService;
+    @Autowired CommentService commentService;
 
     public Good add(Good good) {
         return goodDao.save(good);
@@ -85,6 +87,20 @@ public class GoodService {
                 matrixGoods.add(goodsOfEachRow);
             }
             category.setMatrixGoods(matrixGoods);
+        }
+    }
+
+    public void setSaleAndCommentAmount(Good good){
+        int saleAmount = indentItemService.getSaleAmount(good);
+        good.setSaleAmount(saleAmount);
+
+        int commentAmount = commentService.getCommentAmount(good);
+        good.setCommentAmount(commentAmount);
+    }
+
+    public void setSaleAndCommentAmount(List<Good> goods){
+        for( Good good : goods ){
+            setSaleAndCommentAmount(good);
         }
     }
 

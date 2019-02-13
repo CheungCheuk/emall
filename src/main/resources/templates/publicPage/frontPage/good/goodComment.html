@@ -1,0 +1,36 @@
+<div th:fragment="html">
+    <div class="productReviewDiv" v-show="showReview" >
+        <div class="productReviewTopPart">
+            <a  href="" class="productReviewTopPartSelectedLink" 
+                v-on:click="tirggerDetail">商品详情</a>
+            <a  href="" class="selected">
+                累计评价 
+                <span class="productReviewTopReviewLinkNumber">
+                    {{good.commentAmount}}
+                </span> 
+            </a>
+        </div>
+        
+        <div class="productReviewContentPart">
+            <div class="productReviewItem" 
+                v-for="comment in comments">
+                <div class="productReviewItemDesc">
+                    <div class="productReviewItemContent">
+                        {{comment.content }}
+                    </div>
+                    <div class="productReviewItemDate">
+                        {{comment.createDate|formatDateFilter('YYYY-MM-DD')}}
+                    </div>
+                </div>
+                <div class="productReviewItemUserInfo">
+                    {{comment.user.anonymousName}}
+                    <span class="userInfoGrayPart">
+                        （匿名）
+                    </span>
+                </div>
+            
+                <div style="clear:both"></div>         
+            </div>
+        </div>
+    </div>
+</div>

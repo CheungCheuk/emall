@@ -1,0 +1,33 @@
+<div th:fragment="html">
+        <div class="productDetailDiv" v-show="showDetail" >
+            <div class="productDetailTopPart">
+                <a href="" class="productDetailTopPartSelectedLink selected">商品详情</a>
+                <a 
+                    href="" 
+                    class="productDetailTopReviewLink" 
+                    @click="triggerComments">
+                        累计评价 
+                        <span class="productDetailTopReviewLinkNumber">
+                            {{good.commentAmount}}
+                        </span> 
+                </a>
+            </div>
+    
+            <div class="productParamterPart">
+                <div class="productParamter">产品参数：</div>
+                <div class="productParamterList">
+                    <span 
+                        v-for="attributeValue in attributeValues" >
+                        {{attributeValue.attribute.name}}: {{attributeValue.value | subStringFilter(0,10)}} 
+                    </span>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            
+            <div class="productDetailImagesPart">
+                <img 
+                    v-for="detailImage in good.detailImageList" 
+                    v-bind:src="'img/goodDetail/' + detailImageList.id + '.jpg'">
+            </div>
+        </div>
+    </div>

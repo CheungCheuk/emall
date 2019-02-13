@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/fore/header::html" ></head>
+<body>
+<div id="vueHook">
+    <div th:replace="pubicPage/frontPage/top::html" ></div>
+    <div th:replace="pubicPage/frontPage/search::html" ></div>
+    <div th:replace="pubicPage/frontPage/good/goodPage::html" ></div>
+    <div th:replace="pubicPage/frontPage/modal4login::html" ></div>
+    <div th:replace="pubicPage/frontPage/footer::html" ></div>
+</div>
+<script>
+var vue = new Vue({
+    el:"#vueHook",
+    data(){
+        return{
+            good:"",
+            category:null,
+            shrinkImage:null,
+            comments:[],
+            attributeValues:[],
+            showDetails:true,
+            showComments:false,
+            user:{
+                name:"",
+                password:""
+            }
+        }
+    },
+    mounted(){
+        axios.post("froegood/" + getUrlParms("good_id"))
+        .then( response => {
+            vue.good = response.data.good;
+            vue.attributeValues = response.data.attributeValues;
+            vue.comments = response.data.comments;
+            vue.category = vue.good.category;
+            vue.shrinkImage = vue.good.shrinkImage;
+            vue.$nextTick(  () => {
+                $(".addCartButton").removeAttr("disabled");
+                $("img.smallImage").mouseenter(function(){
+                    let bigImageURL = $(this).attr("bigImageURL");
+                    $("img.bigImg").attr("src",bigImageURL);
+                });
+                $("img.bigImg").load(
+                    function(){
+                        $("img.smallImage").each(function(){
+                            var bigImageURL = $(this).attr("bigImageURL");
+                            img = new Image();
+                            img.src = bigImageURL;
+                            img.onload = function(){
+                                $("div.img4load").append($(img));
+                            };
+                        });    
+                    }
+                );
+
+            })
+
+        }).catch( error => {
+            console.log(error.message);
+        });
+    },
+    methods:{
+        tirggerDetail:function(){
+            this.showComments = false;
+            this.showDetails = true;
+        },
+        triggerComments:function(){
+            this.showComments = true;
+            this.showDetails = false;
+        },
+        setPurchaseAmount:function(){
+            let stock = vue.good.stock
+            let amount = getPurchaseAmount();
+            checkStockBoundary(amount);
+            setPurchaseAmount(amount);
+        },
+        purchaseAmountUp:function(){
+            let amount = getPurchaseAmount();
+            amount++;
+            checkStockBoundary(amount);
+            setPurchaseAmount(amount);
+        },
+        purchaseAmountDown:function(){
+            let amount = getPurchaseAmount();
+            --amount;
+            checkStockBoundary(amount);
+            setPurchaseAmount(amount);
+        },
+        addCart:function(){
+            axios.get("foreCheckLogin").then( response =>{
+                if ( 0 === response.data.code ){
+                    let good_id = vue.good.id;
+                    let amount = getPurchaseAmount();
+                    let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
+                    axios.get(url).then( response =>{
+                        let result = response.data;
+                        if ( 0 === result.code ){
+                            $(".addCartButton").html("已加入购物车");
+                            $(".addCartButton").attr("disabled","disabled");
+                            $(".addCartButton").css("background-color","lightgray")
+                            $(".addCartButton").css("border-color","lightgray")
+                            $(".addCartButton").css("color","black")
+                        }
+                    }).catch( error =>{
+                        console.log(error);
+                    })
+                }else{
+                    // 如果没有登陆，弹出登录窗口
+                    // $("#loginModal").modal('show'); 
+                }
+            }).catch( error =>{
+                console.log(error);
+            });
+        },
+        buyImmediately:function(){
+            axios.get("foreCheckLogin").then( response =>{
+                if ( 0 === response.data.code ){
+                    let good_id = vue.good.id;
+                    let amount = getPurchaseAmount();
+                    let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
+                    axios.get(url).then( response =>{
+                        if ( 0 === response.data.code ){
+                            let good_id = vue.good.id;
+                            let amount = getPurchaseAmount();
+                            let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
+                            axios.get(url).then( response =>{
+                                let indentItem_id =  response.data;
+                                location.href = "buy?indentItem_id=" + indentItem_id
+                            }).catch( error =>{
+                                console.log(error);
+                            });
+                        }else{
+                            $("#loginModal").modal('show');
+                        }
+                    });
+                }
+            });
+            return false;
+        },
+        login:function(){
+                    if ( 0 === this.user.name.length ){
+                        alert("请输入账户");
+                        return;
+                    }
+                    if ( 0 === this.user.password.length ){
+                        alert("请输入密码");
+                        return;
+                    }
+                    axios.post("login",this.user).then( response => {
+                        result = response.data;
+                        if ( result.code === 0 ){
+                            location.href = "good?good_id=" + vue.good.id;
+                        }else{
+                            alert(result.message);
+                        }
+                    }).catch( error => {
+                        // console.log(error.message);
+                        alert(error);
+                    });
+                }
+    }
+});
+
+// 获取<input> 标签的属性的值 value 
+function getPurchaseAmount(){
+    document.querySelector("productNumberSetting").value;
+    return parseInt(amount);
+}
+// 设置<input> 标签的属性的值 value 
+function setPurchaseAmount(amount){
+    document.querySelector("productNumberSetting").value = amount;
+}
+// 判断
+function checkStockBoundary(amount){
+    if ( isNaN(amount) || amount <= 0 ){
+        amount = 1;
+    }
+    if ( amount > stock ){
+        amoutn = stock;
+    }
+    return amount;
+}
+
+
+</script>
+</body>
+</html>

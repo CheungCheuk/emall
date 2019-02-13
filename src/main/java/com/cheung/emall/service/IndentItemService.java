@@ -1,12 +1,10 @@
 
-
-
-
 package com.cheung.emall.service;
 
 import java.util.List;
 
 import com.cheung.emall.dao.IndentItemDao;
+import com.cheung.emall.pojo.Good;
 import com.cheung.emall.pojo.Indent;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +59,36 @@ public class IndentItemService {
             // goodImageService.findShrinkImage(indentItem.getGood());  bug来源，导致没有传输到图片到客户端
             goodImageService.setOneShrinkImage(indentItem.getGood());
         }
-
         indent.setIndentItems(indentItems);
         indent.setEachItemAmount(eachItemAmount);
         indent.setEachItemTotalPrice(eachItemTotalPrice);
-        
     }
-    
+    // frontend
+    public IndentItem add(IndentItem indentItem){
+        return indentItemDao.save(indentItem);
+    }
+    public IndentItem get (int id){
+        return indentItemDao.findOne(id);
+    }
+    public void delete(int id){
+        indentItemDao.delete(id);
+    }
+    public List<IndentItem> getByGood(Good good){
+        return indentItemDao.findByGood(good);
+    }
+    public List<IndentItem> getByIndent(Indent indent){
+        return indentItemDao.findByIndentOrderByIdDesc(indent);
+    }
+    public int getSaleAmount(Good good){
+        List<IndentItem> indentItems = indentItemDao.findByGood(good);
+        int amount = 0;
+        for( IndentItem indentItem : indentItems) {
+            if ( null != indentItem.getIndent() ){
+                if ( null != indentItem.getIndent().getPayDate() ){
+                    amount+=indentItem.getNumber();
+                }
+            }
+        }
+        return amount;
+    }
 }

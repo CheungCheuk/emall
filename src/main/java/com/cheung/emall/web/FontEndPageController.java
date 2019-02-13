@@ -45,5 +45,9 @@ public class FontEndPageController {
         session.removeAttribute("user");
         return "redirect:home";
     }
-    
+    @GetMapping("/good")
+    public String goodPage(){
+        return "frontPage/good";
+    }
+
 }

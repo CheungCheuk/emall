@@ -1,8 +1,8 @@
 
-
 package com.cheung.emall.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +44,50 @@ public class Good {
 
     @Transient
     private GoodImage shrinkImage;
+
+    //  前端
+    @Transient
+    private List<GoodImage> shrinkImageList;
+    @Transient
+    private List<GoodImage> detailImageList;
+    @Transient
+    private int saleAmount; // 销量
+    @Transient
+    private int commentAmount;  //  累计评价
+
+
+    public List<GoodImage> getShrinkImageList() {
+        return this.shrinkImageList;
+    }
+
+    public void setShrinkImageList(List<GoodImage> shrinkImageList) {
+        this.shrinkImageList = shrinkImageList;
+    }
+
+    public List<GoodImage> getDetailImageList() {
+        return this.detailImageList;
+    }
+
+    public void setDetailImageList(List<GoodImage> detailImageList) {
+        this.detailImageList = detailImageList;
+    }
+
+    public int getSaleAmount() {
+        return this.saleAmount;
+    }
+
+    public void setSaleAmount(int saleAmount) {
+        this.saleAmount = saleAmount;
+    }
+
+    public int getCommentAmount() {
+        return this.commentAmount;
+    }
+
+    public void setCommentAmount(int commentAmount) {
+        this.commentAmount = commentAmount;
+    }
+
 
     /**
      * @param goodImage the goodImage to set
