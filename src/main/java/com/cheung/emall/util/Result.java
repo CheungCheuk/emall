@@ -23,8 +23,8 @@ public class Result {
         return new Result(SUCCESS_CODE,null,null);
     }
 
-    public static Result success(Object data){
-        return  new Result(SUCCESS_CODE, "", data);
+    public static Result success(Object result){
+        return  new Result(SUCCESS_CODE, "", result);
     }
 
     

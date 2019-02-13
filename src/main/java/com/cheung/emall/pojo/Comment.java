@@ -32,7 +32,7 @@ public class Comment {
     private Good good;
 
     private String content;
-    private Date creatDate;
+    private Date createDate;
 
 
     public int getId() {
@@ -68,11 +68,11 @@ public class Comment {
     }
 
     public Date getCreatDate() {
-        return this.creatDate;
+        return this.createDate;
     }
 
     public void setCreatDate(Date creatDate) {
-        this.creatDate = creatDate;
+        this.createDate = creatDate;
     }
 
 }

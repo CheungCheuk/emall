@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/fore/header::html" ></head>
+<head th:include="publicPage/frontPage/header::html" ></head>
 <body>
 <div id="vueHook">
-    <div th:replace="pubicPage/frontPage/top::html" ></div>
-    <div th:replace="pubicPage/frontPage/search::html" ></div>
-    <div th:replace="pubicPage/frontPage/good/goodPage::html" ></div>
-    <div th:replace="pubicPage/frontPage/modal4login::html" ></div>
-    <div th:replace="pubicPage/frontPage/footer::html" ></div>
+    <div th:replace="publicPage/frontPage/top::html" ></div>
+    <div th:replace="publicPage/frontPage/search::html" ></div>
+    <div th:replace="publicPage/frontPage/good/goodPage::html" ></div>
+    <div th:replace="publicPage/frontPage/modal4login::html" ></div>
+    <div th:replace="publicPage/frontPage/footer::html" ></div>
 </div>
 <script>
 var vue = new Vue({
     el:"#vueHook",
     data(){
         return{
+            result:[],
             good:"",
             category:null,
             shrinkImage:null,
             comments:[],
             attributeValues:[],
             showDetails:true,
-            showComments:false,
+            showComments:"",
             user:{
                 name:"",
                 password:""
@@ -28,34 +29,20 @@ var vue = new Vue({
         }
     },
     mounted(){
-        axios.post("froegood/" + getUrlParms("good_id"))
+        axios.get("froegood/" + getUrlParms("good_id"))
         .then( response => {
-            vue.good = response.data.good;
-            vue.attributeValues = response.data.attributeValues;
-            vue.comments = response.data.comments;
+            // vue.result = response.data;
+            vue.good = response.data.data.good;
+            vue.attributeValues = response.data.data.attributeValues;
+            vue.comments = response.data.data.comments;
             vue.category = vue.good.category;
             vue.shrinkImage = vue.good.shrinkImage;
-            vue.$nextTick(  () => {
-                $(".addCartButton").removeAttr("disabled");
-                $("img.smallImage").mouseenter(function(){
-                    let bigImageURL = $(this).attr("bigImageURL");
-                    $("img.bigImg").attr("src",bigImageURL);
-                });
-                $("img.bigImg").load(
-                    function(){
-                        $("img.smallImage").each(function(){
-                            var bigImageURL = $(this).attr("bigImageURL");
-                            img = new Image();
-                            img.src = bigImageURL;
-                            img.onload = function(){
-                                $("div.img4load").append($(img));
-                            };
-                        });    
-                    }
-                );
-
-            })
-
+            // vue.$nextTick(  () => {
+            //     interaction();
+            // })
+            // vue.$nextTick(function(){
+            //     imgAndInfoPageRegisterListeners(vue);
+            // })
         }).catch( error => {
             console.log(error.message);
         });
@@ -71,22 +58,59 @@ var vue = new Vue({
         },
         setPurchaseAmount:function(){
             let stock = vue.good.stock
-            let amount = getPurchaseAmount();
-            checkStockBoundary(amount);
-            setPurchaseAmount(amount);
+            // let amount = getPurchaseAmount();
+            let amount = $(".productNumberSetting").val();
+            if ( isNaN(amount) || amount <= 0 ){
+                amount = 1;
+            }
+            if ( amount > stock ){
+                amoutn = stock;
+            }
+            // checkStockBoundary(amount);
+            // setPurchaseAmount(amount);
+            $(".productNumberSetting").val(amount);
         },
         purchaseAmountUp:function(){
-            let amount = getPurchaseAmount();
+            // let amount = getPurchaseAmount();
+            let amount = $(".productNumberSetting").val();
             amount++;
-            checkStockBoundary(amount);
-            setPurchaseAmount(amount);
+            if ( amount > stock ){
+                amoutn = stock;
+            }
+            // checkStockBoundary(amount);
+            // setPurchaseAmount(amount);
+            $(".productNumberSetting").val(amount);
         },
         purchaseAmountDown:function(){
-            let amount = getPurchaseAmount();
+            // let amount = getPurchaseAmount();
+            let amount = $(".productNumberSetting").val();
             --amount;
-            checkStockBoundary(amount);
-            setPurchaseAmount(amount);
+            if ( isNaN(amount) || amount <= 0 ){
+                amount = 1;
+            }
+            // checkStockBoundary(amount);
+            // setPurchaseAmount(amount);
+            $(".productNumberSetting").val(amount);
         },
+// 获取<input> 标签的属性的值 value 
+getPurchaseAmount:function(){
+    let amount = document.querySelector("productNumberSetting").value;
+    return parseInt(amount);
+},
+// 设置<input> 标签的属性的值 value 
+    setPurchaseAmount:function(amount){
+        document.querySelector("productNumberSetting").value = amount;
+    },
+// 判断
+checkStockBoundary:function(amount){
+    if ( isNaN(amount) || amount <= 0 ){
+        amount = 1;
+    }
+    if ( amount > stock ){
+        amoutn = stock;
+    }
+    return amount;
+},
         addCart:function(){
             axios.get("foreCheckLogin").then( response =>{
                 if ( 0 === response.data.code ){
@@ -107,7 +131,7 @@ var vue = new Vue({
                     })
                 }else{
                     // 如果没有登陆，弹出登录窗口
-                    // $("#loginModal").modal('show'); 
+                    $("#loginModal").modal('show'); 
                 }
             }).catch( error =>{
                 console.log(error);
@@ -162,25 +186,7 @@ var vue = new Vue({
     }
 });
 
-// 获取<input> 标签的属性的值 value 
-function getPurchaseAmount(){
-    document.querySelector("productNumberSetting").value;
-    return parseInt(amount);
-}
-// 设置<input> 标签的属性的值 value 
-function setPurchaseAmount(amount){
-    document.querySelector("productNumberSetting").value = amount;
-}
-// 判断
-function checkStockBoundary(amount){
-    if ( isNaN(amount) || amount <= 0 ){
-        amount = 1;
-    }
-    if ( amount > stock ){
-        amoutn = stock;
-    }
-    return amount;
-}
+
 
 
 </script>

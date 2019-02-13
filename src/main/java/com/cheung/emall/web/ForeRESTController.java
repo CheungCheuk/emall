@@ -77,7 +77,7 @@ public class ForeRESTController {
         }
     }
 
-    @GetMapping("/froegood/{good.id}")
+    @GetMapping("/froegood/{good_id}")
     public Result listGood(@PathVariable int good_id){
         Good good = goodService.get(good_id);
         List<Comment> comments = commentService.findByGood(good);

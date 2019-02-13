@@ -1,7 +1,13 @@
 <div th:fragment="html">
-        <div class="productDetailDiv" v-show="showDetail" >
+    
+        <div class="productDetailDiv" v-show="showDetails" >
             <div class="productDetailTopPart">
-                <a href="" class="productDetailTopPartSelectedLink selected">商品详情</a>
+
+                <a 
+                    href="" 
+                    class="productDetailTopPartSelectedLink selected">
+                    商品详情
+                </a>
                 <a 
                     href="" 
                     class="productDetailTopReviewLink" 
@@ -27,7 +33,7 @@
             <div class="productDetailImagesPart">
                 <img 
                     v-for="detailImage in good.detailImageList" 
-                    v-bind:src="'img/goodDetail/' + detailImageList.id + '.jpg'">
+                    v-bind:src="'img/goodDetail/' + detailImage.id + '.jpg'">
             </div>
         </div>
     </div>

@@ -136,3 +136,127 @@
             <div style="clear:both"></div>
         </div>
     </div>
+    <script>
+// function imgAndInfoPageRegisterListeners(vue){
+    // $(function(){
+    //     let stock = vue.good.stock;
+
+    // $(".productNumberSetting").keyup(function(){
+    //     let amount= $(".productNumberSetting").val();
+    //     amount = parseInt(amount);
+    //     if(isNaN(amount))
+    //     amount= 1;
+    //     if(amount<=0)
+    //     amount = 1;
+    //     if(amount>stock)
+    //     amount = stock;
+    //     $(".productNumberSetting").val(num);
+    // });
+    
+    // $(".increaseNumber").click(function(){
+    //     let amount = $(".productNumberSetting").val();
+    //     amount++;
+    //     if(amount>stock)
+    //     amount = stock;
+    //     $(".productNumberSetting").val(amount);
+    // });
+
+    // $(".decreaseNumber").click(function(){
+    //     let amount= $(".productNumberSetting").val();
+    //     --amount;
+    //     if(amount<=0)
+    //         amount=1;
+    //     $(".productNumberSetting").val(amount);
+    // });
+
+    // $("button.loginSubmitButton").click(function(){
+    //     var url =  "forelogin";
+    //     if(0==vue.user.name.length){
+    //         $("span.errorMessage").html("请输入用户名");
+    //         $("div.loginErrorMessageDiv").css("visibility","visible");
+    //         return;
+    //     }
+    //     if(0==vue.user.password.length){
+    //         $("span.errorMessage").html("请输入密码");
+    //         $("div.loginErrorMessageDiv").css("visibility","visible");
+    //         return;
+    //     }                   
+        
+    //     axios.post(url,vue.user).then(function(response) {
+    //         var result = response.data;
+    //         if(result.code==0){
+    //             location.href="product?pid="+vue.p.id;
+    //         }
+    //         else{
+    //             $("span.errorMessage").html(result.message);
+    //             $("div.loginErrorMessageDiv").css("visibility","visible");                             
+    //         }
+    //     });
+    // });
+    
+    // $("img.smallImage").mouseenter(function(){
+    //     var bigImageURL = $(this).attr("bigImageURL");
+    //     $("img.bigImg").attr("src",bigImageURL);
+    // });
+
+    // $("img.bigImg").load(
+    //     function(){
+    //         $("img.smallImage").each(function(){
+    //             var bigImageURL = $(this).attr("bigImageURL");
+    //             img = new Image();
+    //             img.src = bigImageURL;
+    //             img.onload = function(){
+    //                 $("div.img4load").append($(img));
+    //             };
+    //         });
+    //     }
+    // );
+    // });
+    
+    
+    $(".addCartButton").removeAttr("disabled");
+    $(".addCartLink").click(function(){
+        var url = "forecheckLogin";
+        axios.get(url).then(function(response) {
+            if( 0 === response.data.code ){
+                var good_id = vue.good.id;
+                var num= $(".productNumberSetting").val();
+                var url =  "foreaddCart?good_id=" + good_id + "&amount=" + amount;
+                axios.get(url).then( response=>{
+                        result = response.data;
+                    if(0 == result.code){
+                        $(".addCartButton").html("已加入购物车");
+                        $(".addCartButton").attr("disabled","disabled");
+                        $(".addCartButton").css("background-color","lightgray")
+                        $(".addCartButton").css("border-color","lightgray")
+                        $(".addCartButton").css("color","black")
+                    }
+                });
+            }
+            else{
+                $("#loginModal").modal('show');                    
+            }          
+        });
+    });
+    $(".buyLink").click(function(){
+        var url = "forecheckLogin";
+        axios.get(url).then(function(response) {
+            if(0 === response.data.code){
+                var pid = vue.p.id;
+                var num= $(".productNumberSetting").val();
+                var url =  "forebuyone?pid="+pid+"&num="+num;
+                axios.get(url).then(function(response) {
+                    var oiid = response.data;
+                    location.href="buy?oiid="+oiid;
+                });                       
+            }
+            else{
+                $("#loginModal").modal('show');                    
+            }
+        });
+        return false;
+    });
+    
+    
+
+    </script>
