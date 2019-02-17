@@ -1,10 +1,17 @@
 package com.cheung.emall.web;
 
+// import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.cheung.emall.comparator.CommentComparator;
+import com.cheung.emall.comparator.DateComparator;
+import com.cheung.emall.comparator.PriceComparator;
+import com.cheung.emall.comparator.SaleAmountComparator;
+import com.cheung.emall.comparator.SynthesisComparator;
 import com.cheung.emall.pojo.AttributeValue;
 import com.cheung.emall.pojo.Category;
 import com.cheung.emall.pojo.Comment;
@@ -108,6 +115,36 @@ public class ForeRESTController {
         }
     }
 
+    @GetMapping("/foreCategory/{category_id}")
+    public Object listCategory(@PathVariable("category_id") int id, String sort){
+        Category category = categoryService.get(id);
+        goodService.setCategoryInGood(category);
+        List<Good> goodsList = category.getGoods();
+        goodService.setSaleAndCommentAmount(goodsList);
+        categoryService.avoidUnlimitedRecursionInCategory(category);
+        
+
+        if ( null != sort ){
+            switch (sort) {
+                case "comment":
+                    Collections.sort(goodsList, new CommentComparator());
+                    break;
+                case "date":
+                    Collections.sort(goodsList, new DateComparator());
+                case "saleAmount":
+                    Collections.sort(goodsList, new SaleAmountComparator());
+                case "price":
+                    Collections.sort(goodsList, new PriceComparator());
+                case "synthesis":
+                    Collections.sort(goodsList, new SynthesisComparator());
+                default:
+                    break;
+            }
+        }
+        category.setGoods(goodsList);
+        return category;
+    }
+    
     // @GetMapping("/foreAddCart)
     
 }

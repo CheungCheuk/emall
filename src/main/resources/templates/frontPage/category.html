@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:include="publicPage/frontPage/header::html" ></head>
+    <body>
+        <div id="vueHook">
+            <div th:replace="publicPage/frontPage/top::html" ></div>   
+            <div th:replace="publicPage/frontPage/search::html" ></div>
+            <!-- 这是死活渲染不出来？？ -->
+            <div th:replace="publicPage/frontPage/category/categoryPage::html" ></div> 
+            <div th:replace="publicPage/frontPage/footer::html" ></div>
+        </div>
+        <script>
+                var vue = new Vue({
+                    el:"#vueHook",
+                    data(){
+                        return{
+                            category:{
+                                id:"",
+                                name:""
+                            },
+                            goods:[],
+                            sort:""
+                        }
+                    },
+                    mounted(){
+                        let category_id = getUrlParms("category_id");
+                        let sort = getUrlParms("sort");
+                        axios.get("foreCategory/" + category_id + "?sort=" + sort)
+                        .then( response =>{
+                            vue.category.id = response.data.id;
+                            vue.category.name = response.data.name;
+                            vue.goods = response.data.goods;
+                        }).catch( error => {
+                            console.log(error);
+                        });
+                    },
+                    methods:{
+                        setPriceInterval:function(){
+                            let amount = $("input.sortBarPrice").val();
+                            if ( amount.length === 0 ){
+                                $("div.productUnit").show();
+                                return;
+                            }
+                            amount = parseInt(amount);
+                            if( isNaN(amount) || amount <= 0 ){
+                                amount = 1;
+                            }
+                            $("table.sortBarPrice").val(amount);
+                            let begin = $("input.beginPrice").val();
+                            let end = $("input.endPrice").val();
+                            if ( !isNaN(begin) && !isNaN(end) ){
+                                $("div.productUnit").hide();
+                                $("div.productUnit").each(function(){
+                                    //  class="productUnit"中 
+                                    // 被vue绑定的属性：v-bind:price="good.promotePrice"
+                                    let price = $(this).attr("price");  
+                                    price = new Number(price);
+                                    if( price <= end && price >= begin){
+                                        $(this).show();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+        </script>
+    </body>
+</html>

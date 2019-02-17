@@ -1,0 +1,12 @@
+<div th:fragment="html">
+    <title>首页-{{category.name}}</title>   
+    <div id="category">
+        <div class="categoryPageDiv">
+            <img 
+                v-if="category.id != null"
+                v-bind:src="'img/category/' + category.id + '.jpg'">
+            <div th:replace="publicPage/frontPage/category/sortBar::html" ></div>  
+            <div th:replace="publicPage/frontPage/category/categoryGood::html" ></div>   
+        </div>
+    </div>
+</div>

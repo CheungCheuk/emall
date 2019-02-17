@@ -1,8 +1,7 @@
 <div th:fragment="html">
     <title>{{good.name}}</title>
     <div class="categoryPictureInProductPageDiv">
-        <img 
-            width="1600" height="160"
+        <img
             v-if="category!=null" 
             v-bind:src="'img/category/'+category.id+'.jpg'"
             class="categoryPictureInProductPage" >

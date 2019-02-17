@@ -105,6 +105,7 @@ var vue = new Vue({
             }).catch( error =>{
                 console.log(error);
             });
+
             // 如果已登陆，则将商品添加到购物车
             if ( isLogin ){
                 let good_id = vue.good.id;

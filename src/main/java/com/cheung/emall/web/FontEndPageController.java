@@ -50,5 +50,41 @@ public class FontEndPageController {
     public String goodPage(){
         return "frontPage/good";
     }
+    @GetMapping("/category")
+    public String category(){
+        return "frontPage/category";
+    }
+    @GetMapping("/cart")
+    public String cart(){
+        return "frontPage/cart";
+    }
 
+    @GetMapping("/buy")
+    public String buy(){
+        return "frontPage/buy";
+    }
+    @GetMapping("/bought")
+    public String bought(){
+        return "frontPage/bought";
+    }
+    @GetMapping("/confirmPay")
+    public String confirmPay(){
+        return "frontPage/confirmPay";
+    }
+    @GetMapping("/indentConfirmed")
+    public String indentConfirmed(){
+        return "frontPage/indentConfirmed";
+    }
+    @GetMapping("/paid")
+    public String paid(){
+        return "frontPage/paid";
+    }
+    @GetMapping("/comment")
+    public String comment(){
+        return "frontPage/comment";
+    }
+    @GetMapping("/search")
+    public String search(){
+        return "frontPage/search";
+    }
 }
