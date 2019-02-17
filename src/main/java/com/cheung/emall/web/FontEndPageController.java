@@ -20,6 +20,7 @@ public class FontEndPageController {
     public String index() {
         return "redirect:home";
     }
+    
     @GetMapping("/home")
     public String home() {
         return "frontPage/home";

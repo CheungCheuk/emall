@@ -1,8 +1,12 @@
 <div th:fragment="html">
     <div class="productReviewDiv" v-show="showComments" >
+    <!-- <div class="productReviewDiv"> -->
         <div class="productReviewTopPart">
-            <a  href="" class="productReviewTopPartSelectedLink" 
-                v-on:click="tirggerDetail">商品详情</a>
+            <a  href="" 
+                class="productReviewTopPartSelectedLink" 
+                v-on:click="tirggerDetail">
+                商品详情
+            </a>
             <a  href="" class="selected">
                 累计评价 
                 <span class="productReviewTopReviewLinkNumber">
@@ -14,15 +18,13 @@
             <div class="productReviewItem" 
                 v-for="comment in comments">
                 <div class="productReviewItemDesc">
-                    <div class="productReviewItemContent">
-                        {{comment.content }}
+                    <div class="productReviewItemContent" v-text="comment.content">
                     </div>
                     <div class="productReviewItemDate">
                         {{comment.createDate|formatDateFilter('YYYY-MM-DD')}}
                     </div>
                 </div>
-                <div class="productReviewItemUserInfo">
-                    {{comment.user.anonymousName}}
+                <div class="productReviewItemUserInfo" v-text="comment.user.anonymousName">
                     <span class="userInfoGrayPart">
                         （匿名）
                     </span>
@@ -31,9 +33,11 @@
             </div>
         </div>
     </div>
+
+    <!-- 详情页 -->
     <div class="productDetailDiv" v-show="showDetails" >
                 <div class="productDetailTopPart">
-                    <a 
+                    <a
                         href="" 
                         class="productDetailTopPartSelectedLink selected">
                         商品详情
@@ -41,7 +45,7 @@
                     <a 
                         href="" 
                         class="productDetailTopReviewLink" 
-                        @click="triggerComments">
+                        v-on:click="triggerComments">
                             累计评价 
                             <span class="productDetailTopReviewLinkNumber">
                                 {{good.commentAmount}}
@@ -57,8 +61,7 @@
                         </span>
                     </div>
                     <div style="clear:both"></div>
-                </div>
-                
+                </div>            
                 <div class="productDetailImagesPart">
                     <img 
                         v-for="detailImage in good.detailImageList" 

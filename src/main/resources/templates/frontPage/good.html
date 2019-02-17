@@ -16,16 +16,17 @@ var vue = new Vue({
         return{
             result:[],
             good:"",
-            category:null,
-            shrinkImage:null,
             comments:[],
             attributeValues:[],
-            showDetails:true,
-            showComments:"",
             user:{
                 name:"",
                 password:""
-            }
+            },
+            category:null,
+            shrinkImage:null,
+            showDetails:true,
+            showComments:false,
+            isLogin:false
         }
     },
     mounted(){
@@ -33,31 +34,29 @@ var vue = new Vue({
         .then( response => {
             // vue.result = response.data;
             vue.good = response.data.data.good;
-            vue.attributeValues = response.data.data.attributeValues;
             vue.comments = response.data.data.comments;
+            vue.attributeValues = response.data.data.attributeValues;
+            // 根据对应关系，赋值
             vue.category = vue.good.category;
             vue.shrinkImage = vue.good.shrinkImage;
-            // vue.$nextTick(  () => {
-            //     interaction();
-            // })
-            // vue.$nextTick(function(){
-            //     imgAndInfoPageRegisterListeners(vue);
-            // })
         }).catch( error => {
             console.log(error.message);
         });
     },
     methods:{
+        // 显示详情页
         tirggerDetail:function(){
             this.showComments = false;
             this.showDetails = true;
         },
+        // 显示评论
         triggerComments:function(){
             this.showComments = true;
             this.showDetails = false;
         },
-        setPurchaseAmount:function(){
-            let stock = vue.good.stock
+        // 输入购买数量
+        inputPurchaseAmount:function(){
+            let stock = this.good.stock
             // let amount = getPurchaseAmount();
             let amount = $(".productNumberSetting").val();
             if ( isNaN(amount) || amount <= 0 ){
@@ -70,6 +69,7 @@ var vue = new Vue({
             // setPurchaseAmount(amount);
             $(".productNumberSetting").val(amount);
         },
+        // 购买数量+1
         purchaseAmountUp:function(){
             // let amount = getPurchaseAmount();
             let amount = $(".productNumberSetting").val();
@@ -81,6 +81,7 @@ var vue = new Vue({
             // setPurchaseAmount(amount);
             $(".productNumberSetting").val(amount);
         },
+        // 购买数量-1
         purchaseAmountDown:function(){
             // let amount = getPurchaseAmount();
             let amount = $(".productNumberSetting").val();
@@ -92,43 +93,11 @@ var vue = new Vue({
             // setPurchaseAmount(amount);
             $(".productNumberSetting").val(amount);
         },
-// 获取<input> 标签的属性的值 value 
-getPurchaseAmount:function(){
-    let amount = document.querySelector("productNumberSetting").value;
-    return parseInt(amount);
-},
-// 设置<input> 标签的属性的值 value 
-    setPurchaseAmount:function(amount){
-        document.querySelector("productNumberSetting").value = amount;
-    },
-// 判断
-checkStockBoundary:function(amount){
-    if ( isNaN(amount) || amount <= 0 ){
-        amount = 1;
-    }
-    if ( amount > stock ){
-        amoutn = stock;
-    }
-    return amount;
-},
+        // 添加到购物车
         addCart:function(){
             axios.get("foreCheckLogin").then( response =>{
                 if ( 0 === response.data.code ){
-                    let good_id = vue.good.id;
-                    let amount = getPurchaseAmount();
-                    let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
-                    axios.get(url).then( response =>{
-                        let result = response.data;
-                        if ( 0 === result.code ){
-                            $(".addCartButton").html("已加入购物车");
-                            $(".addCartButton").attr("disabled","disabled");
-                            $(".addCartButton").css("background-color","lightgray")
-                            $(".addCartButton").css("border-color","lightgray")
-                            $(".addCartButton").css("color","black")
-                        }
-                    }).catch( error =>{
-                        console.log(error);
-                    })
+                    this.isLogin = true;
                 }else{
                     // 如果没有登陆，弹出登录窗口
                     $("#loginModal").modal('show'); 
@@ -136,32 +105,49 @@ checkStockBoundary:function(amount){
             }).catch( error =>{
                 console.log(error);
             });
+            // 如果已登陆，则将商品添加到购物车
+            if ( isLogin ){
+                let good_id = vue.good.id;
+                let amount = $(".productNumberSetting").val();
+                let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
+                axios.get(url).then( response =>{
+                    result = response.data;  
+                    if ( 0 === result.code ){
+                        $(".addCartButton").html("已加入购物车");
+                        $(".addCartButton").attr("disabled","disabled");
+                        $(".addCartButton").css("background-color","lightgray")
+                        $(".addCartButton").css("border-color","lightgray")
+                        $(".addCartButton").css("color","black")
+                    }
+                }).catch( error =>{
+                    console.log(error);
+                });
+            }
         },
+        // 立即购买
         buyImmediately:function(){
             axios.get("foreCheckLogin").then( response =>{
                 if ( 0 === response.data.code ){
-                    let good_id = vue.good.id;
-                    let amount = getPurchaseAmount();
-                    let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
-                    axios.get(url).then( response =>{
-                        if ( 0 === response.data.code ){
-                            let good_id = vue.good.id;
-                            let amount = getPurchaseAmount();
-                            let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
-                            axios.get(url).then( response =>{
-                                let indentItem_id =  response.data;
-                                location.href = "buy?indentItem_id=" + indentItem_id
-                            }).catch( error =>{
-                                console.log(error);
-                            });
-                        }else{
-                            $("#loginModal").modal('show');
-                        }
-                    });
+                    this.isLogin = true;
+                }else{
+                    // 如果没有登陆，弹出登录窗口
+                    $("#loginModal").modal('show'); 
                 }
+            }).catch( error =>{
+                console.log(error);
             });
-            return false;
+
+            if ( isLogin ){
+                let good_id = vue.good.id;
+                let amount = $(".productNumberSetting").val();
+                let url = "foreAddCart?good_id=" + good_id + "&amount=" + amount;
+                axios.get(url).then( response =>{
+                    let indentItem_id =  response.data;
+                    location.href = "buy?indentItem_id=" + indentItem_id;
+                });
+            }
         },
+        // 登录验证
         login:function(){
                     if ( 0 === this.user.name.length ){
                         alert("请输入账户");
@@ -183,11 +169,27 @@ checkStockBoundary:function(amount){
                         alert(error);
                     });
                 }
+        // 获取<input> 标签的属性的值 value 
+        // getPurchaseAmount:function(){
+        //     let amount = document.querySelector("productNumberSetting").value;
+        //     return parseInt(amount);
+        // },
+        // // 设置<input> 标签的属性的值 value 
+        //     setPurchaseAmount:function(amount){
+        //         document.querySelector("productNumberSetting").value = amount;
+        //     },
+        // // 判断
+        // checkStockBoundary:function(amount){
+        //     if ( isNaN(amount) || amount <= 0 ){
+        //         amount = 1;
+        //     }
+        //     if ( amount > stock ){
+        //         amoutn = stock;
+        //     }
+        //     return amount;
+        // },
     }
 });
-
-
-
 
 </script>
 </body>

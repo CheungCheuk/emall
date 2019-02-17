@@ -97,5 +97,17 @@ public class ForeRESTController {
 
         return Result.success(goodPageMap);
     }
+
+    @GetMapping("/foreCheckLogin")
+    public Result checkLogin(HttpSession httpsession) {
+        User use = (User) httpsession.getAttribute("user");
+        if ( null != use ){
+            return Result.success();
+        }else{
+            return Result.fail("未登录");
+        }
+    }
+
+    // @GetMapping("/foreAddCart)
     
 }

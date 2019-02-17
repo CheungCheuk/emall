@@ -1,8 +1,7 @@
 <div th:fragment="html">
-    
-        <div class="productDetailDiv" v-show="showDetails" >
+        <!-- <div class="productDetailDiv" v-show="showDetails" > -->
+        <div class="productDetailDiv">
             <div class="productDetailTopPart">
-
                 <a 
                     href="" 
                     class="productDetailTopPartSelectedLink selected">
@@ -11,7 +10,9 @@
                 <a 
                     href="" 
                     class="productDetailTopReviewLink" 
-                    @click="triggerComments">
+                    
+                    >
+                    <!-- @click="triggerComments" -->
                         累计评价 
                         <span class="productDetailTopReviewLinkNumber">
                             {{good.commentAmount}}
