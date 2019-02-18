@@ -6,28 +6,28 @@
                     <!-- 若 ( sort === null || sort === 'synthesis') 为true，则显示 grayColumn -->
                 <td 
                     v-bind:class="{'grayColumn' : ( sort === null || sort === 'synthesis')}">
-                    <a v-bind:href="'?category_id=' + category.id + '&sort=all'">
+                    <a v-bind:href="'?category_id=' + category.id + '&sort=synthesis'">
                         综合
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </a>
                 </td>
                 <td 
                     v-bind:class="{'grayColumn' : (sort === null || sort === 'comment')}">
-                    <a v-bind:href="'?category_id=' + category.id + '&sort=review'">
-                        人气
+                    <a v-bind:href="'?category_id=' + category.id + '&sort=comment'">
+                        评论
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </a>
                 </td>
-                <td 
+                <!-- <td 
                     v-bind:class="{'grayColumn' : (sort === null || sort === 'date')}">
-                    <a v-bind:href=" '?category_cid=' + category.id + '&sort=date' ">
+                    <a v-bind:href=" '?category_id=' + category.id + '&sort=date' ">
                         新品
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </a>
-                </td>
+                </td> -->
                 <td 
                     v-bind:class="{'grayColumn' : (sort === null || sort === 'saleAmount')}">
-                    <a v-bind:href="' ?category_id=' + category.id + '&sort=saleCount' ">
+                    <a v-bind:href="' ?category_id=' + category.id + '&sort=saleAmount' ">
                         销量
                         <span class="glyphicon glyphicon-arrow-down"></span>
                     </a>
@@ -36,7 +36,7 @@
                     v-bind:class="{'grayColumn' : (sort === null || sort === 'price')}">
                     <a v-bind:href="'?category_id=' + category.id + '&sort=price'">
                         价格
-                        <span class="glyphicon glyphicon-resize-vertical"></span>
+                        <span class="glyphicon glyphicon-arrow-up"></span>
                     </a>
                 </td>
             </tr>
@@ -50,14 +50,14 @@
                     <input 
                         class="sortBarPrice beginPrice" 
                         type="text" 
-                        placeholder="请输入">
+                        placeholder="最低价格">
                 </td>
                 <td class="grayColumn priceMiddleColumn">-</td>
                 <td>
                     <input 
                         class="sortBarPrice endPrice"
                         type="text" 
-                        placeholder="请输入">
+                        placeholder="最高价格">
                 </td>
             </tr>
         </table>

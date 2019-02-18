@@ -36,16 +36,16 @@
                     },
                     methods:{
                         setPriceInterval:function(){
-                            let amount = $("input.sortBarPrice").val();
-                            if ( amount.length === 0 ){
-                                $("div.productUnit").show();
-                                return;
-                            }
-                            amount = parseInt(amount);
-                            if( isNaN(amount) || amount <= 0 ){
-                                amount = 1;
-                            }
-                            $("table.sortBarPrice").val(amount);
+                            // let amount = $("input.sortBarPrice").val();
+                            // if ( amount.length === 0 ){
+                            //     $("div.productUnit").show();
+                            //     return;
+                            // }
+                            // amount = parseInt(amount);
+                            // if( isNaN(amount) || amount <= 0 ){
+                            //     amount = 1;
+                            // }
+                            // $("table.sortBarPrice").val(amount);
                             let begin = $("input.beginPrice").val();
                             let end = $("input.endPrice").val();
                             if ( !isNaN(begin) && !isNaN(end) ){

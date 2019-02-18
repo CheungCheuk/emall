@@ -83,7 +83,10 @@ public class IndentItemService {
         List<IndentItem> indentItems = indentItemDao.findByGood(good);
         int amount = 0;
         for( IndentItem indentItem : indentItems) {
+            // 如果订单存在，则设置销量
             if ( null != indentItem.getIndent() ){
+                // 如果订单已付款，则根据订单项的购买数量，累加
+                // 一个订单项，对应一个商品
                 if ( null != indentItem.getIndent().getPayDate() ){
                     amount+=indentItem.getNumber();
                 }

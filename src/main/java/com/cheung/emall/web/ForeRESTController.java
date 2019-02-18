@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -116,14 +117,14 @@ public class ForeRESTController {
     }
 
     @GetMapping("/foreCategory/{category_id}")
-    public Object listCategory(@PathVariable("category_id") int id, String sort){
+    public Object listCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
         Category category = categoryService.get(id);
         goodService.setCategoryInGood(category);
         List<Good> goodsList = category.getGoods();
         goodService.setSaleAndCommentAmount(goodsList);
         categoryService.avoidUnlimitedRecursionInCategory(category);
-        
-
+        // 第一次请求该页面，默认不会根据 sort 字段排序
+        // 默认根据 id 排序
         if ( null != sort ){
             switch (sort) {
                 case "comment":
