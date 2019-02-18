@@ -117,7 +117,7 @@ public class ForeRESTController {
     }
 
     @GetMapping("/foreCategory/{category_id}")
-    public Object listCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
+    public Category listCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
         Category category = categoryService.get(id);
         goodService.setCategoryInGood(category);
         List<Good> goodsList = category.getGoods();
@@ -145,7 +145,18 @@ public class ForeRESTController {
         category.setGoods(goodsList);
         return category;
     }
-    
+
+    @GetMapping("/foreSearch")
+    public List<Good> search(@RequestParam("keyword") String keyword){
+        if ( null == keyword ){
+            keyword = "";
+        }
+        List<Good> goods = goodService.search(keyword);
+        goodImageService.setMultipleShrinkImage(goods);
+        goodService.setSaleAndCommentAmount(goods);
+        return goods;
+    }
+
     // @GetMapping("/foreAddCart)
     
 }

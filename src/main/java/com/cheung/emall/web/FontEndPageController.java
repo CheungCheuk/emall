@@ -75,16 +75,19 @@ public class FontEndPageController {
     public String indentConfirmed(){
         return "frontPage/indentConfirmed";
     }
+
     @GetMapping("/paid")
     public String paid(){
         return "frontPage/paid";
     }
+
     @GetMapping("/comment")
     public String comment(){
         return "frontPage/comment";
     }
+
     @GetMapping("/search")
     public String search(){
-        return "frontPage/search";
+        return "frontPage/searchResult";
     }
 }

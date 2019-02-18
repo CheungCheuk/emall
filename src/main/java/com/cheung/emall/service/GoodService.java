@@ -104,6 +104,9 @@ public class GoodService {
         }
     }
 
+    public List<Good> search(String keyword){
+        return goodDao.findByNameLike("%" + keyword + "%");
+    }
 }
 
 

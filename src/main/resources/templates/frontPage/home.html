@@ -19,9 +19,9 @@
                         // linkDefaultActions();    给一些超链接加上事件，已废弃
                         axios.get("forehome").then( response => {
                             vue.categories = response.data;
-                            vue.$nextTick( function() {
-                                // homePageRegisterListeners(); 
-                            })
+                            // vue.$nextTick( function() {
+                            // homePageRegisterListeners(); 
+                            // })
                         });
                     },
                     filters:{

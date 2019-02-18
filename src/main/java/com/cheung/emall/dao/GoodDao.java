@@ -17,4 +17,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface GoodDao extends  CrudRepository<Good,Integer>{
     List<Good> findByCategory(Category category, Sort sort);
     List<Good> findByCategoryOrderByIdDesc(Category category);
+    // 模糊查询
+    List<Good> findByNameLike(String keyword);
 }

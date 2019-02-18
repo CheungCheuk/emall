@@ -1,0 +1,50 @@
+<div class th:fragment="html">
+        <div class="searchProducts">
+                <!-- v-bind:price="${good.promotePrice}"  -->
+            <div 
+                class="productUnit" 
+                v-bind:price="good.promotePrice" 
+                v-for="good in goods" >
+                <a v-bind:href="'good?good_id=' + good.id">
+                    <img 
+                        class="productImage" 
+                        v-bind:src="'img/goodShrink/'+good.shrinkImage.id+'.jpg'">
+                </a>
+                <span class="productPrice">
+                    {{good.promotePrice}}
+                </span>
+                <!-- v-bind:href="foreproduct?pid=${p.id}" -->
+                <a 
+                    class="productLink"
+                    v-bind:href="'good?good_id=' + good.id">
+                    {{good.name|subStringFilter(0,50)}}
+                </a>
+                <!-- <a  class="tmallLink" 
+                    v-bind:href="'product?pid='+p.id">专卖
+                </a> -->
+                <div class="show1 productInfo">
+                    <span class="monthDeal ">
+                        月成交 
+                        <span class="productDealNumber">
+                            {{good.saleAmount}}笔
+                        </span>
+                    </span>
+                    <span class="productReview">
+                        评价
+                        <span class="productReviewNumber">
+                            {{good.commentAmount}}
+                        </span>
+                    </span>
+                    <span class="wangwang">
+                        <!-- <img src="img/site/wangwang.png"> -->
+                    </span>
+                </div>
+            </div>
+            <div 
+                v-if="0 == goods.length" class="noMatch">
+                没有满足条件的产品
+            </div>
+            <div style="clear:both"></div>
+        </div>
+</div>
+        

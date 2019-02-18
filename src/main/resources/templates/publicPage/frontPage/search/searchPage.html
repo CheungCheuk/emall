@@ -1,0 +1,27 @@
+<div class th:fragment="html">
+    <div id="searchResult">
+        <div class="searchResultDiv">
+            <div th:replace="publicPage/frontPage/search/searchResult::html" >
+            </div>  
+        </div>
+    </div>
+    <script>
+            var vue = new Vue({
+                el:"#vueHook",
+                data(){
+                    return{
+                        goods:[]
+                    }
+                },
+                mounted(){
+                    let keyword = getUrlParms("keyword")
+                    axios.get("foreSearch?keyword=" + keyword)
+                    .then( response =>{
+                        vue.goods = response.data;
+                    }).catch( error =>{
+                        console.log(error);
+                    });
+                }
+            });
+    </script>
+</div>

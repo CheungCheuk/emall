@@ -14,7 +14,8 @@
                     <a v-bind:href="'good?good_id=' + good.id">
                         <img width="100px" :src="'img/goodShrink_middle/'+good.shrinkImage.id + '.jpg' ">
                     </a>
-                    <a class="productItemDescLink" v-bind:href=" 'good?good_id=' + good.id">
+                    <a class="productItemDescLink" 
+                    v-bind:href=" 'good?good_id=' + good.id">
                         <span class="productItemDesc">[热销]
                             {{good.name | subStringFilter(0,20)}}
                         </span>

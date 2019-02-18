@@ -1,12 +1,18 @@
 <div class th:fragment="html">
-        <a th:href="${application.contextPath}">
-            <!-- <img id="logo" src="img/site/logoj.gif" class=""> -->
-        </a>
+        <!-- <a th:href="${application.contextPath}">
+            <img id="logo" src="img/site/logoj.gif" class="">
+        </a> -->
         <form action="search" method="get" >
                 
             <div class="searchDiv">
-                <input name="keyword" type="text" placeholder="Apple">
-                <button  type="submit" class="searchButton">搜索</button>
+                <input 
+                    name="keyword" 
+                    type="text" placeholder="Apple">
+                <button  
+                    type="submit" 
+                    class="searchButton">
+                    搜索
+                </button>
             </div>
         </form>
 </div>

@@ -6,6 +6,7 @@
             <div th:replace="publicPage/frontPage/top::html" ></div>   
             <div th:replace="publicPage/frontPage/search::html" ></div>
             <!-- 这是死活渲染不出来？？ -->
+            <!-- 漏了 <div class th:fragment="html"> -->
             <div th:replace="publicPage/frontPage/category/categoryPage::html" ></div> 
             <div th:replace="publicPage/frontPage/footer::html" ></div>
         </div>
