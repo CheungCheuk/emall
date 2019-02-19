@@ -108,7 +108,7 @@ public class CategoryController {
         //  并没有新建文件！再查查 api
         File serverImageFolder = new File(request.getServletContext().getRealPath("img/category")); //..bug：无法创建 category 目录
         File serverImage = new File(serverImageFolder,category.getId()+".jpg"); //  对图片命名
-        //  图片目录不存在，则创建该目录
+        //  图片父目录不存在，则创建该目录
         // !serverImageFolder.getParentFile().exists()  fix bug
         if (!serverImage.getParentFile().exists() ){
             serverImage.getParentFile().mkdirs();
