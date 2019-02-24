@@ -8,6 +8,7 @@ import com.cheung.emall.pojo.Category;
 import com.cheung.emall.pojo.Good;
 
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class GoodService {
     @Autowired IndentItemService indentItemService;
     @Autowired CommentService commentService;
 
+    // @CacheEvict(allEntries = true)
     public Good add(Good good) {
         return goodDao.save(good);
     }

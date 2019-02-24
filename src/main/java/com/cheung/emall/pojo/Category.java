@@ -1,9 +1,12 @@
 package com.cheung.emall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+// import org.springframework.data.redis.core.RedisHash;
+
 import java.util.List;
 import javax.persistence.*;
-
+// @RedisHash("Category")
 @Entity                 //  实体类
 @Table(name = "category")   //  对应表名
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})   //  忽略无需 json 化的handler属性、hibernateLazyInitializer属性
