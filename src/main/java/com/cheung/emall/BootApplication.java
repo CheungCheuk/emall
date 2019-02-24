@@ -11,9 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // @EnableCaching  //  启动缓存
 @SpringBootApplication
 public class BootApplication {
-    // static{
-    //     PortUtil.checkPort(6379,"Redis服务器",true);
-    // }
     public static void main(String[] args) {
         //  没有该类的引用实例时，使用.class获取类运行时的有关信息
         //  有该类的引用实例时，使用 getClass()

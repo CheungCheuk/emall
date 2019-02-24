@@ -20,9 +20,10 @@ public class Category {
     //  一个分类下的所有商品
     @Transient
     List<Good> goods;
+
     //  矩阵商品列表，用于展示商品页面
-    @Transient
-    List<List<Good>> matrixGoods;
+    // @Transient
+    // List<List<Good>> matrixGoods;
 
 
     public List<Good> getGoods() {
@@ -34,13 +35,13 @@ public class Category {
     }
 
 
-    public List<List<Good>> getMatrixGoods() {
-        return this.matrixGoods;
-    }
+    // public List<List<Good>> getMatrixGoods() {
+    //     return this.matrixGoods;
+    // }
 
-    public void setMatrixGoods(List<List<Good>> matrixGoods) {
-        this.matrixGoods = matrixGoods;
-    }
+    // public void setMatrixGoods(List<List<Good>> matrixGoods) {
+    //     this.matrixGoods = matrixGoods;
+    // }
 
     
 

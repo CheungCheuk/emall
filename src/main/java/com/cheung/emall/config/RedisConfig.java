@@ -3,20 +3,20 @@ package com.cheung.emall.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 /**
  * RedisConfig，配置 Redis 缓存。
  * 使保存在 redis 中的 key 和 value 转换为具有可读的 JSON 字符串，
@@ -46,11 +46,12 @@ public class RedisConfig extends CachingConfigurerSupport {
 
         return cacheManager;
     }
-
+    
     @Bean
     public JedisConnectionFactory jedisConnectionFactory(){
         return new JedisConnectionFactory();
     }
+
     @Bean
     public StringRedisTemplate redisTemplate(){
         StringRedisTemplate redisTemplate = new StringRedisTemplate(jedisConnectionFactory());

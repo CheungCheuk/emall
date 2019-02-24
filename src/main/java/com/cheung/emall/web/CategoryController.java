@@ -7,9 +7,9 @@ import com.cheung.emall.service.CategoryService;
 // import com.cheung.emall.util.ImageUtil;
 // import com.cheung.emall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+// import org.springframework.cache.annotation.CacheEvict;
+// import org.springframework.cache.annotation.CachePut;
+// import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +32,8 @@ import java.util.List;
  * 处理页面的 ajax 请求
  */ 
 @RestController
+// @CacheConfig(cacheNames = "categories") //  Redis缓存中，以字段 "categories~key" 出现
+// 等价于 @Cacheable(value="categories") 
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
@@ -54,7 +56,7 @@ public class CategoryController {
 
 
     @DeleteMapping("/categories/{id}")
-    @CacheEvict(value="categories", allEntries = true)
+    // @CacheEvict(value="categories", allEntries = true)
     public void delete(
         @PathVariable("id") int id,
         HttpServletRequest request
@@ -67,7 +69,7 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{id}")
-    @CachePut(value="categories", key = " 'category-one' ")
+    // @CachePut(value="categories", key = " 'category-one' ")
     public Category updCategory(
         @PathVariable("id")int id, 
         MultipartFile image, 
@@ -90,7 +92,7 @@ public class CategoryController {
 
 
     @GetMapping("/categories/{id}")
-    @Cacheable(value="categories",key = " 'category-single' ")
+    // @Cacheable(value="categories",key = " 'category-single' ")
     // value是 cacheName 别名
     public Category get(@PathVariable("id") int id)throws Exception{
         return categoryService.get(id);
@@ -98,7 +100,8 @@ public class CategoryController {
 
 
     @GetMapping("/categories")
-    @Cacheable(value="categories", key = " 'categories-whole' ")    //..双引号“”内是 SPEL（Spring Expresssion Language）
+    // @Cacheable(value="categories", key = " 'categories-whole' ")    
+    //..双引号“”内是 SPEL（Spring Expresssion Language）
     //  使用单引号'‘ 使之成为字符串
     // # 在SPEL 中，是用来 引用变量
     public List<Category> listCategory() throws Exception{

@@ -8,7 +8,7 @@ import com.cheung.emall.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 // import org.springframework.cache.annotation.CacheEvict;
-// import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Cacheable;
 // import org.springframework.data.domain.Page;
 // import org.springframework.data.domain.PageRequest;
 // import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-// @CacheConfig(cacheNames = "categories") //  Redis缓存中，以字段 "categories~key" 出现
+// @CacheConfig(cacheNames = "category") //  Redis缓存中，以字段 "categories~key" 出现
 public class CategoryService {
     @Autowired
     CategoryDAO categoryDAO;
@@ -51,10 +51,6 @@ public class CategoryService {
         return categoryDAO.findOne(id);
     }
     
-    
-    
-
-
 //    @Override
 //    public Page4Navigator<Category> listCategoryByPaging(int start, int size, int navigatePages) {
 //        Sort sort = new Sort(Sort.Direction.DESC,"id");
@@ -64,6 +60,7 @@ public class CategoryService {
 //    }
 
 /*C
+ * 避免 stackover flow：堆栈溢出；
  * Category 中含有 good，属性
  * Good 又含有 category 属性，
  * 这时在 json 序列化的时候会产生无限递归，
@@ -84,15 +81,15 @@ public class CategoryService {
             }
         }
         //  将用于展示的矩阵列表，设置为 null
-        List<List<Good>> matrixGoods = category.getMatrixGoods();
-        if (null != matrixGoods) {
+        // List<List<Good>> matrixGoods = category.getMatrixGoods();
+        // if (null != matrixGoods) {
             
-            for (List<Good> eachRowGoods : matrixGoods) {
-                for (Good good : eachRowGoods) {
-                    good.setCategory(null);
-                } 
-            }
-        }
+        //     for (List<Good> eachRowGoods : matrixGoods) {
+        //         for (Good good : eachRowGoods) {
+        //             good.setCategory(null);
+        //         } 
+        //     }
+        // }
     }
 
 }
