@@ -6,6 +6,9 @@ import com.cheung.emall.pojo.Good;
 import com.cheung.emall.service.CategoryService;
 // import com.cheung.emall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 // import org.springframework.data.domain.Page;
 // import org.springframework.data.domain.PageRequest;
 // import org.springframework.data.domain.Pageable;
@@ -16,34 +19,40 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "categories") //  Redis缓存中，以字段 "categories~key" 出现
 public class CategoryService {
     @Autowired
     CategoryDAO categoryDAO;
 
-    
+    // 增删改：使用 CacheEvict
+    @CacheEvict(allEntries = true)
+    public Category add(Category bean) {
+        return categoryDAO.save(bean);
+    }
+    @CacheEvict(allEntries = true)
+    public void delete(int id) {
+        categoryDAO.delete(id);
+    }
+    @CacheEvict(allEntries = true)
+    public Category update(Category category) {
+        return categoryDAO.save(category);
+    }
+
+    // 查询：使用 Cacheable
+    @Cacheable(key = " 'categories-all' ")  //  在 redis 中的 key 名称，通过命令行：get categories-all 即可获取相应的所哟实体
     public List<Category> listCategory() {
         //  根据 id 倒排序
         Sort sort = new Sort(Sort.Direction.DESC,"id");
         return categoryDAO.findAll(sort);
     }
     
-    public Category add(Category bean) {
-        return categoryDAO.save(bean);
-    }
-
-    public void delete(int id) {
-        categoryDAO.delete(id);
-    }
-
-    
+    @Cacheable(key = " 'categories-one' ")  //·redis 中的 key 名
     public Category get(int id) {
         return categoryDAO.findOne(id);
     }
     
     
-    public Category update(Category category) {
-        return categoryDAO.save(category);
-    }
+    
 
 
 //    @Override
