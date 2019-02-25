@@ -59,20 +59,20 @@ public class CategoryService {
 //        return new Page4Navigator<>(pageFromJPA, navigatePages);
 //    }
 
-/*C
+/**
  * 避免 stackover flow：堆栈溢出；
  * Category 中含有 good，属性
  * Good 又含有 category 属性，
- * 这时在 json 序列化的时候会产生无限递归，
+ * 这时在 json 序列化的时候会产生无限嵌套，造成堆栈溢出。
  * 该方法将 该Category 下对应的 Good 的category 属性，设置为null
  */
-    public void avoidUnlimitedRecursionInCategory(List<Category> categories) {
+    public void avidoStackOverFlow(List<Category> categories) {
         for (Category category : categories) {
-            avoidUnlimitedRecursionInCategory(category);
+            avidoStackOverFlow(category);
         }
     }
 
-    public void avoidUnlimitedRecursionInCategory(Category category) {
+    public void avidoStackOverFlow(Category category) {
         //  将一个 category 下对应的所有 good
         List<Good> goods = category.getGoods();
         if (null != goods) {
@@ -80,16 +80,6 @@ public class CategoryService {
                 good.setCategory(null);
             }
         }
-        //  将用于展示的矩阵列表，设置为 null
-        // List<List<Good>> matrixGoods = category.getMatrixGoods();
-        // if (null != matrixGoods) {
-            
-        //     for (List<Good> eachRowGoods : matrixGoods) {
-        //         for (Good good : eachRowGoods) {
-        //             good.setCategory(null);
-        //         } 
-        //     }
-        // }
     }
 
 }

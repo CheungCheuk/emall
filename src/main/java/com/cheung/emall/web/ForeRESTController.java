@@ -56,12 +56,12 @@ public class ForeRESTController {
     CommentService commentService;
 
     @GetMapping("/forehome")
-    @Cacheable(value = "category", key = " 'category_list' ")
+    @Cacheable(value = "category", key = " '#home_category_list' ")
     public List<Category> home() {
         List<Category> categories = categoryService.listCategory();
         goodService.setCategoryInGood(categories);   
         // goodService.fillMatrixGoods(categories);
-        categoryService.avoidUnlimitedRecursionInCategory(categories);
+        categoryService.avidoStackOverFlow(categories);
         return categories;
     }
 
@@ -124,7 +124,7 @@ public class ForeRESTController {
         goodService.setCategoryInGood(category);
         List<Good> goodsList = category.getGoods();
         goodService.setSaleAndCommentAmount(goodsList);
-        categoryService.avoidUnlimitedRecursionInCategory(category);
+        categoryService.avidoStackOverFlow(category);
         // 第一次请求该页面，默认不会根据 sort 字段排序
         // 默认根据 id 排序
         if ( null != sort ){
