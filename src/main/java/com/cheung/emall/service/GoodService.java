@@ -1,6 +1,6 @@
 package com.cheung.emall.service;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 
 import com.cheung.emall.dao.GoodDao;

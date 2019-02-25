@@ -55,16 +55,6 @@ public class ForeRESTController {
     @Autowired
     CommentService commentService;
 
-    @GetMapping("/forehome")
-    @Cacheable(value = "category", key = " '#home_category_list' ")
-    public List<Category> home() {
-        List<Category> categories = categoryService.listCategory();
-        goodService.setCategoryInGood(categories);   
-        // goodService.fillMatrixGoods(categories);
-        categoryService.avidoStackOverFlow(categories);
-        return categories;
-    }
-
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
         String tempName = user.getName();
@@ -118,8 +108,20 @@ public class ForeRESTController {
         }
     }
 
+
+    @GetMapping("/forehome")
+    @Cacheable(value = "category", key = "#root.methodName")
+    public List<Category> homeListCategories() {
+        List<Category> categories = categoryService.listCategory();
+        goodService.setCategoryInGood(categories);   
+        // goodService.fillMatrixGoods(categories);
+        categoryService.avidoStackOverFlow(categories);
+        return categories;
+    }
+
     @GetMapping("/foreCategory/{category_id}")
-    public Category listCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
+    @Cacheable(value = "category", key = "#root.methodName")
+    public Category getCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
         Category category = categoryService.get(id);
         goodService.setCategoryInGood(category);
         List<Good> goodsList = category.getGoods();
