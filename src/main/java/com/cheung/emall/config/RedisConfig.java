@@ -56,8 +56,10 @@ public class RedisConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager(StringRedisTemplate stringRedisTemplate){
         return new RedisCacheManager(stringRedisTemplate);
     }
+}
 
-    // @Bean
+
+// @Bean
     // public CacheManager cacheManager(RedisTemplate<String,Object> redisTemplate){
     //     return new RedisCacheManager(redisTemplate);
     // }
@@ -82,7 +84,3 @@ public class RedisConfig extends CachingConfigurerSupport {
     //     CacheManager cacheManager = new RedisCacheManager(redisTemplate);
     //     return cacheManager;
     // }
-}
-
-
-    
