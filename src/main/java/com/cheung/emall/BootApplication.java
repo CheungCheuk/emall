@@ -1,11 +1,14 @@
 package com.cheung.emall;
 
+// import com.cheung.emall.util.PortUtil;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+// import org.springframework.cache.annotation.EnableCaching;
 
 //  @SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
 
-
+// @EnableCaching  //  启动缓存
 @SpringBootApplication
 public class BootApplication {
     public static void main(String[] args) {

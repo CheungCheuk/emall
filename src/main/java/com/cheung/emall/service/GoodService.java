@@ -1,6 +1,6 @@
 package com.cheung.emall.service;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 
 import com.cheung.emall.dao.GoodDao;
@@ -8,6 +8,7 @@ import com.cheung.emall.pojo.Category;
 import com.cheung.emall.pojo.Good;
 
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class GoodService {
     @Autowired IndentItemService indentItemService;
     @Autowired CommentService commentService;
 
+    // @CacheEvict(allEntries = true)
     public Good add(Good good) {
         return goodDao.save(good);
     }
@@ -65,30 +67,30 @@ public class GoodService {
      * 为所有分类，
      * 设置矩阵商品列表
      */
-    public void fillMatrixGoods(List<Category> categories) {
-        //  矩阵商品列表的每行数目
-        int amountOfEachRow = 8;
-        //  为每一个分类，设置用于矩阵列表展示的商品
-        for (Category category : categories) {
-            List<Good> goods = category.getGoods();
-            List<List<Good>> matrixGoods = new ArrayList<>();
+    // public void fillMatrixGoods(List<Category> categories) {
+    //     //  矩阵商品列表的每行数目
+    //     int amountOfEachRow = 8;
+    //     //  为每一个分类，设置用于矩阵列表展示的商品
+    //     for (Category category : categories) {
+    //         List<Good> goods = category.getGoods();
+    //         List<List<Good>> matrixGoods = new ArrayList<>();
             
-            //  对包含所有商品的 goods 分割，将分割后的商品，分别保存到矩阵列表 martixGoods 每一行的中，
-            //  例如，第一行，【0，1，2，3，4，5，6，7】
-            // 第二行：【8，9，10，11，12，13，14，15】，以此类推
-            // 每次分割
-            for (int fromIndex = 0; fromIndex < goods.size(); fromIndex+=amountOfEachRow ) {
-                int toIndex = fromIndex + amountOfEachRow;
-                // 边界值判断
-                if (toIndex > goods.size()) {
-                    toIndex = goods.size();
-                }
-                List<Good> goodsOfEachRow = goods.subList(fromIndex, toIndex);
-                matrixGoods.add(goodsOfEachRow);
-            }
-            category.setMatrixGoods(matrixGoods);
-        }
-    }
+    //         //  对包含所有商品的 goods 分割，将分割后的商品，分别保存到矩阵列表 martixGoods 每一行的中，
+    //         //  例如，第一行，【0，1，2，3，4，5，6，7】
+    //         // 第二行：【8，9，10，11，12，13，14，15】，以此类推
+    //         // 每次分割
+    //         for (int fromIndex = 0; fromIndex < goods.size(); fromIndex+=amountOfEachRow ) {
+    //             int toIndex = fromIndex + amountOfEachRow;
+    //             // 边界值判断
+    //             if (toIndex > goods.size()) {
+    //                 toIndex = goods.size();
+    //             }
+    //             List<Good> goodsOfEachRow = goods.subList(fromIndex, toIndex);
+    //             matrixGoods.add(goodsOfEachRow);
+    //         }
+    //         category.setMatrixGoods(matrixGoods);
+    //     }
+    // }
 
     public void setSaleAndCommentAmount(Good good){
         int saleAmount = indentItemService.getSaleAmount(good);

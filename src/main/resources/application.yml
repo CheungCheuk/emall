@@ -1,6 +1,17 @@
 server:
   context-path: /emall
 spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 
+    pool:
+      max-active: 10  #连接池，最大连接数
+      max-wait: -1  #连接池：最大阻塞等待时间
+      max-idle: 8 #最大空闲连接
+      min-idle: 0 #最小空闲连接
+    timeout: 0  # 连接超时时间（毫秒）
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/emall?characterEncoding=UTF-8
@@ -17,8 +28,8 @@ spring:
     show-sql: true
   http:
     multipart:
-      max-request-size: 100Mb
-      max-file-size: 100Mb
+      max-request-size: 10Mb
+      max-file-size: 10Mb
   thymeleaf:
     mode: LEGACYHTML5
     encoding: UTF-8

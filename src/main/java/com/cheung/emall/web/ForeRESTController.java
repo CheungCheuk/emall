@@ -28,6 +28,9 @@ import com.cheung.emall.util.Result;
 
 // import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,15 +57,6 @@ public class ForeRESTController {
     @Autowired
     CommentService commentService;
 
-    @GetMapping("/forehome")
-    public List<Category> home() {
-        List<Category> categories = categoryService.listCategory();
-        goodService.setCategoryInGood(categories);
-        goodService.fillMatrixGoods(categories);
-        categoryService.avoidUnlimitedRecursionInCategory(categories);
-        return categories;
-    }
-
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
         String tempName = user.getName();
@@ -86,7 +80,8 @@ public class ForeRESTController {
     }
 
     @GetMapping("/froegood/{good_id}")
-    public Result listGood(@PathVariable int good_id){
+    @CachePut(value = "category", key = " 'good_id:' + #good_id ")
+    public Result getGood(@PathVariable int good_id){
         Good good = goodService.get(good_id);
         List<Comment> comments = commentService.findByGood(good);
         List<AttributeValue> attributeValues = attributeValueService.findByGood(good);
@@ -116,13 +111,25 @@ public class ForeRESTController {
         }
     }
 
+
+    @GetMapping("/forehome")
+    @Cacheable(value = "category", key = "#root.methodName")
+    public List<Category> homeListCategories() {
+        List<Category> categories = categoryService.listCategory();
+        goodService.setCategoryInGood(categories);   
+        // goodService.fillMatrixGoods(categories);
+        categoryService.avidoStackOverFlow(categories);
+        return categories;
+    }
+
     @GetMapping("/foreCategory/{category_id}")
-    public Category listCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
+    @Cacheable(value = "category", key = "#root.methodName")
+    public Category getCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
         Category category = categoryService.get(id);
         goodService.setCategoryInGood(category);
         List<Good> goodsList = category.getGoods();
         goodService.setSaleAndCommentAmount(goodsList);
-        categoryService.avoidUnlimitedRecursionInCategory(category);
+        categoryService.avidoStackOverFlow(category);
         // 第一次请求该页面，默认不会根据 sort 字段排序
         // 默认根据 id 排序
         if ( null != sort ){

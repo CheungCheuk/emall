@@ -2,9 +2,19 @@ package com.cheung.emall.web;
 
 import com.cheung.emall.pojo.Category;
 import com.cheung.emall.service.CategoryService;
+
+// import org.hibernate.annotations.Cache;
 // import com.cheung.emall.util.ImageUtil;
 // import com.cheung.emall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Caching;
+// import org.springframework.cache.annotation.Caching;
+// import org.springframework.cache.annotation.CacheEvict;
+// import org.springframework.cache.annotation.CachePut;
+// import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,16 +37,14 @@ import java.util.List;
  * 处理页面的 ajax 请求
  */ 
 @RestController
+@CacheConfig(cacheNames = "category")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping("/categories")
-    public List<Category> listCategory() throws Exception{
-        return categoryService.listCategory();
-    }
-
     @PostMapping("/categories")
+    // @CachePut(key = "#root.methodName + 'Category' ")
+    @CacheEvict(allEntries = true)
     public Category add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
         categoryService.add(category);
@@ -51,7 +59,10 @@ public class CategoryController {
     //  org.springframework.dao.EmptyResultDataAccessException: 
     //  No class com.cheung.emall.pojo.Category entity with id 91 exists!
     //  @PathVariable 表明 方法的参数应该和 URI 中的模版参数绑定在一起
+
+
     @DeleteMapping("/categories/{id}")
+    @CacheEvict(allEntries = true)
     public void delete(
         @PathVariable("id") int id,
         HttpServletRequest request
@@ -63,14 +74,15 @@ public class CategoryController {
         // return null;
     }
 
-    @GetMapping("/categories/{id}")
-    public Category get(@PathVariable("id") int id)throws Exception{
-        return categoryService.get(id);
-    }
-
-    @PutMapping("/categories/{id}") //  如果上串的图片含有 二进制文件，则不能使用 @RequestBody，否则报错：Content type 'multipart/form-data;boundary=----WebKitFormBoundaryBbKRwS9TvSpKp7Gs;charset=UTF-8' not supported
-    public Category updCategory(@PathVariable("id")int id, MultipartFile image, HttpServletRequest request)
-    throws Exception{
+    @PutMapping("/categories/{id}")
+    // @CachePut(key = "#root.methodName + 'Category' ")
+    @CacheEvict(allEntries = true)
+    public Category update(
+        @PathVariable("id")int id, 
+        MultipartFile image, 
+        HttpServletRequest request)throws Exception{
+        //  如果上串的图片含有 二进制文件，则不能使用 @RequestBody，
+        // 否则报错：Content type 'multipart/form-data;boundary=----WebKitFormBoundaryBbKRwS9TvSpKp7Gs;charset=UTF-8' not supported
         // String categoryName = request.getParameter("name");  //  HttpServletRequest request
         // category.setName(categoryName);
         Category saveCateogy =  categoryService.get(id);    //  这种写法才是正确的 RESTful 风格写法
@@ -84,6 +96,20 @@ public class CategoryController {
         }
         return categoryService.update(saveCateogy);
     }
+
+
+    @GetMapping("/categories/{id}")
+    public Category get(@PathVariable("id") int id)throws Exception{
+        return categoryService.get(id);
+    }
+
+
+    @GetMapping("/categories")
+    public List<Category> listCategory() throws Exception{
+        return categoryService.listCategory();
+    }
+
+
 
 //    @GetMapping("/categories")
 //    public Page4Navigator<Category> listCategoryByPages(
