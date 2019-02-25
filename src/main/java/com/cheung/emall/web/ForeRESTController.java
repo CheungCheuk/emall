@@ -28,6 +28,8 @@ import com.cheung.emall.util.Result;
 
 // import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,7 +80,8 @@ public class ForeRESTController {
     }
 
     @GetMapping("/froegood/{good_id}")
-    public Result listGood(@PathVariable int good_id){
+    @CachePut(value = "category", key = " 'good_id:' + #good_id ")
+    public Result getGood(@PathVariable int good_id){
         Good good = goodService.get(good_id);
         List<Comment> comments = commentService.findByGood(good);
         List<AttributeValue> attributeValues = attributeValueService.findByGood(good);

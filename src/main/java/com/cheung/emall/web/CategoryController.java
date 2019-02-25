@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Caching;
 // import org.springframework.cache.annotation.Caching;
 // import org.springframework.cache.annotation.CacheEvict;
 // import org.springframework.cache.annotation.CachePut;
@@ -42,7 +43,8 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping("/categories")
-    @CachePut(key = "#root.methodName + 'Category' ")
+    // @CachePut(key = "#root.methodName + 'Category' ")
+    @CacheEvict(allEntries = true)
     public Category add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
         categoryService.add(category);
@@ -73,7 +75,8 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{id}")
-    @CachePut(key = "#root.methodName + 'Category' ")
+    // @CachePut(key = "#root.methodName + 'Category' ")
+    @CacheEvict(allEntries = true)
     public Category update(
         @PathVariable("id")int id, 
         MultipartFile image, 
