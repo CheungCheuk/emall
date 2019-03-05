@@ -35,4 +35,8 @@ spring:
     encoding: UTF-8
     content-type: text/html
     cache: false
+  data:
+    elasticsearch:
+      cluster-nodes: elasticsearch
+      cluster-name: elasticsearch
 
