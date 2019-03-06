@@ -158,7 +158,8 @@ public class ForeRESTController {
         if ( null == keyword ){
             keyword = "";
         }
-        List<Good> goods = goodService.search(keyword);
+        // List<Good> goods = goodService.search(keyword);
+        List<Good> goods = goodService.esSearch(keyword);
         goodImageService.setMultipleShrinkImage(goods);
         goodService.setSaleAndCommentAmount(goods);
         return goods;

@@ -35,4 +35,7 @@ spring:
     encoding: UTF-8
     content-type: text/html
     cache: false
+  data:
+    elasticsearch:
+      cluster-name: 127.0.0.1:9300
 

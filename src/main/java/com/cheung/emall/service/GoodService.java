@@ -1,15 +1,23 @@
 package com.cheung.emall.service;
 
+import java.util.ArrayList;
 // import java.util.ArrayList;
 import java.util.List;
 
 import com.cheung.emall.dao.GoodDao;
+import com.cheung.emall.es.GoodESDao;
 import com.cheung.emall.pojo.Category;
 import com.cheung.emall.pojo.Good;
 
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
+// import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,17 +30,59 @@ public class GoodService {
     @Autowired GoodImageService goodImageService;
     @Autowired IndentItemService indentItemService;
     @Autowired CommentService commentService;
+    @Autowired GoodESDao goodESDao;
 
     // @CacheEvict(allEntries = true)
     public Good add(Good good) {
+        goodESDao.save(good);
         return goodDao.save(good);
     }
     public void delete(int id) {
+        goodESDao.delete(id);
         goodDao.delete(id);
     }
     public Good update(Good good) {
+        goodESDao.save(good);
         return goodDao.save(good);
     }
+    /**
+     * 初始化，先从 es 中查询，若没有，再从数据库中查询，并写入 es 中
+     */
+    private void initElasticsearch(){
+        Iterable<Good> iterable = goodESDao.findAll();
+        List<Good> goods = new ArrayList<>();
+        iterable.forEach(good->goods.add(good));
+        if ( goods.isEmpty() ){
+            goodDao.findAll().forEach(e->goods.add(e));
+            for( Good good : goods ){
+                goodESDao.save(good);
+            }
+        }
+    }
+
+    /**
+     * 
+     */
+    public List<Good> esSearch (String name){
+        initElasticsearch();
+        FunctionScoreQueryBuilder functionScoreQueryBuilder 
+            = QueryBuilders.functionScoreQuery()
+                .add(QueryBuilders.matchPhraseQuery("name", name), ScoreFunctionBuilders.weightFactorFunction(100))
+                .scoreMode("sum")
+                .setMinScore(10);
+
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+        .withQuery(functionScoreQueryBuilder).build();
+
+        Iterable<Good> iterable = goodESDao.search(searchQuery);
+        List<Good> goods = new ArrayList<>();
+        iterable.forEach(e->goods.add(e));
+        return goods;
+    }
+
+
+
+
     public Good get(int id) {
         return goodDao.findOne(id);
     }
