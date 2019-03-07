@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 // import org.springframework.data.annotation.Transient;
 
 /**
@@ -25,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "good")
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 // @Document(indexName = "emall",type = "good")    //  import org.springframework.data.elasticsearch.annotations.Document;
+@Document(indexName = "emall")
 public class Good {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

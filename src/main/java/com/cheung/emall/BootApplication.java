@@ -6,14 +6,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 // import org.springframework.cache.annotation.EnableCaching;
+<<<<<<< HEAD
+=======
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+>>>>>>> ElasticSearch_how2j_version
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //  @SpringBootApplication = @Configuration + @EnableAutoConfiguration + @ComponentScan
 
 // @EnableCaching  //  启动缓存
 @SpringBootApplication
+<<<<<<< HEAD
 @EnableJpaRepositories( basePackages = {"com.chueng.emall.dao", "com.cheung.emall.pojo"})
 @EnableElasticsearchRepositories( basePackages = "com.chueng.emall.es")
+=======
+@EnableElasticsearchRepositories( basePackages = "com.cheung.emall.es")
+@EnableJpaRepositories( basePackages = {"com.cheung.emall.dao", "com.cheung.emall.pojo"})
+>>>>>>> ElasticSearch_how2j_version
 public class BootApplication {
     public static void main(String[] args) {
         //  没有该类的引用实例时，使用.class获取类运行时的有关信息
