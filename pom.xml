@@ -110,7 +110,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <version>3.2.0</version>
     </dependency> -->
     <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch -->
-    <dependency>
+    <!-- <dependency>
         <groupId>org.springframework.data</groupId>
         <artifactId>spring-data-elasticsearch</artifactId>
         <version>3.1.5.RELEASE</version>
@@ -137,7 +137,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <groupId>org.elasticsearch.client</groupId>
         <artifactId>elasticsearch-rest-client-sniffer</artifactId>
         <version>6.5.4</version>
-    </dependency>
+    </dependency> -->
 
 
 
