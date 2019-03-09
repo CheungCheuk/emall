@@ -57,31 +57,40 @@ public class ForeRESTController {
     @Autowired
     CommentService commentService;
 
-    @PostMapping("/register")
-    public Result register(@RequestBody User user) {
-        String tempName = user.getName();
-        if ( userService.isUserConflict(tempName) ){
-            return Result.fail("用户名已存在");
+    /**
+     * 搜索商品
+     */
+    @GetMapping("/foreSearch")
+    public List<Good> search(@RequestParam("keyword") String keyword){
+        if ( null == keyword ){
+            keyword = "";
         }
-        userService.addUser(user);
-        return Result.success();
+        // List<Good> goods = goodService.search(keyword);
+        List<Good> goods = goodService.esSearch(keyword);
+        goodImageService.setMultipleShrinkImage(goods);
+        goodService.setSaleAndCommentAmount(goods);
+        return goods;
+    }
+    
+    /**
+     * 首页展示
+     */
+    @GetMapping("/forehome")
+    @Cacheable(value = "category", key = "#root.methodName")
+    public List<Category> home() {
+        List<Category> categories = categoryService.listCategory();
+        goodService.setCategoryInGood(categories);   
+        // goodService.fillMatrixGoods(categories);
+        categoryService.avidoStackOverFlow(categories);
+        return categories;
     }
 
-    @PostMapping("/login")
-    public Result login(@RequestBody User user, HttpSession session){
-        String tempName = user.getName();
-        String tempPassword = user.getPassword();
-        if ( userService.isUserAndPasswordEqual(tempName, tempPassword) ){
-            session.setAttribute("user", user);
-            return Result.success();
-        }else{
-            return Result.fail("账户密码不匹配");
-        }
-    }
-
+    /**
+     * 商品详情页面
+     */
     @GetMapping("/froegood/{good_id}")
-    @CachePut(value = "category", key = " 'good_id:' + #good_id ")
-    public Result getGood(@PathVariable int good_id){
+    @CachePut(value = "good", key = " #root.methodName + ':' + #good_id ")
+    public Result goodDitial(@PathVariable int good_id){
         Good good = goodService.get(good_id);
         List<Comment> comments = commentService.findByGood(good);
         List<AttributeValue> attributeValues = attributeValueService.findByGood(good);
@@ -101,30 +110,12 @@ public class ForeRESTController {
         return Result.success(goodPageMap);
     }
 
-    @GetMapping("/foreCheckLogin")
-    public Result checkLogin(HttpSession httpsession) {
-        User use = (User) httpsession.getAttribute("user");
-        if ( null != use ){
-            return Result.success();
-        }else{
-            return Result.fail("未登录");
-        }
-    }
-
-
-    @GetMapping("/forehome")
-    @Cacheable(value = "category", key = "#root.methodName")
-    public List<Category> homeListCategories() {
-        List<Category> categories = categoryService.listCategory();
-        goodService.setCategoryInGood(categories);   
-        // goodService.fillMatrixGoods(categories);
-        categoryService.avidoStackOverFlow(categories);
-        return categories;
-    }
-
+    /**
+     * category 页面。展示每个分类的商品，并进行排序等功能
+     */
     @GetMapping("/foreCategory/{category_id}")
-    @Cacheable(value = "category", key = "#root.methodName")
-    public Category getCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
+    @Cacheable(value = "category", key = " 'category:' + #id + '_sort:' +#sort ")
+    public Category goodBelongCategory(@PathVariable("category_id") int id, @RequestParam("sort") String sort){
         Category category = categoryService.get(id);
         goodService.setCategoryInGood(category);
         List<Good> goodsList = category.getGoods();
@@ -153,18 +144,36 @@ public class ForeRESTController {
         return category;
     }
 
-    @GetMapping("/foreSearch")
-    public List<Good> search(@RequestParam("keyword") String keyword){
-        if ( null == keyword ){
-            keyword = "";
+    @GetMapping("/foreCheckLogin")
+    public Result checkLogin(HttpSession httpsession) {
+        User use = (User) httpsession.getAttribute("user");
+        if ( null != use ){
+            return Result.success();
+        }else{
+            return Result.fail("未登录");
         }
-        // List<Good> goods = goodService.search(keyword);
-        List<Good> goods = goodService.esSearch(keyword);
-        goodImageService.setMultipleShrinkImage(goods);
-        goodService.setSaleAndCommentAmount(goods);
-        return goods;
     }
 
-    // @GetMapping("/foreAddCart)
-    
+    @PostMapping("/login")
+    public Result login(@RequestBody User user, HttpSession session){
+        String tempName = user.getName();
+        String tempPassword = user.getPassword();
+        if ( userService.isUserAndPasswordEqual(tempName, tempPassword) ){
+            session.setAttribute("user", user);
+            return Result.success();
+        }else{
+            return Result.fail("账户密码不匹配");
+        }
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody User user) {
+        String tempName = user.getName();
+        if ( userService.isUserConflict(tempName) ){
+            return Result.fail("用户名已存在");
+        }
+        userService.addUser(user);
+        return Result.success();
+    }
+
 }
