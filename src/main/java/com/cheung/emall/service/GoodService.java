@@ -46,38 +46,62 @@ public class GoodService {
         return goodDao.save(good);
     }
     /**
-     * 初始化，先从 es 中查询，若没有，再从数据库中查询，并写入 es 中
+     * 判断是否已经初始化 Elasticsearch。若已初始化：true。
      */
-    private void initElasticsearch(){
+    private boolean initElasticsearch(){
         Iterable<Good> iterable = goodESDao.findAll();
-        List<Good> goods = new ArrayList<>();
-        iterable.forEach(good->goods.add(good));
-        if ( goods.isEmpty() ){
-            goodDao.findAll().forEach(e->goods.add(e));
-            for( Good good : goods ){
-                goodESDao.save(good);
-            }
+        if ( iterable  == null  ){
+            return false;
+        }else{
+            return true;
         }
     }
-
+    // List<Good> goods = new ArrayList<>();
+    // goodDao.findAll().forEach(e->goods.add(e));
+    // for( Good good : goods ){
+    //     goodESDao.save(good);
+    // }
     /**
      * 
      */
     public List<Good> esSearch (String name){
-        initElasticsearch();
+        //  未初始化，先初始化
+        if ( !initElasticsearch() ){
+            List<Good> goods = new ArrayList<>();
+            goodDao.findAll().forEach(e -> goods.add(e));
+            for( Good good : goods ){
+                goodESDao.save(good);
+            }
+        }
+
+        //  构建过滤器
         FunctionScoreQueryBuilder functionScoreQueryBuilder 
             = QueryBuilders.functionScoreQuery()
                 .add(QueryBuilders.matchPhraseQuery("name", name), ScoreFunctionBuilders.weightFactorFunction(100))
                 .scoreMode("sum")
                 .setMinScore(10);
 
-        SearchQuery searchQuery = new NativeSearchQueryBuilder()
-        .withQuery(functionScoreQueryBuilder).build();
+        //  构建查询语句
+        SearchQuery searchQuery 
+            = new NativeSearchQueryBuilder().withQuery(functionScoreQueryBuilder).build();
 
-        Iterable<Good> iterable = goodESDao.search(searchQuery);
-        List<Good> goods = new ArrayList<>();
-        iterable.forEach(e->goods.add(e));
-        return goods;
+        //  Elasticsearch 根据查询语句查询
+        // Iterable<Good> iterable = goodESDao.search(searchQuery);
+        // iterable.forEach(e->goods.add(e));
+        List<Good> goodList = new ArrayList<>();
+        
+        goodESDao.search(searchQuery).forEach(e -> goodList.add(e));
+
+        //  如果从 Elasticsearch 中没有查询到结果，则从数据库中查找，并将新数据添加到 Elasticsearch 中
+        if ( goodList.isEmpty() ){
+            List<Good> goods  = goodDao.findByNameLike("%" + name + "%");
+            for( Good good : goods ){
+                goodESDao.save(good);
+            }
+            return goods;
+        }
+
+        return goodList;
     }
 
 
@@ -156,9 +180,9 @@ public class GoodService {
         }
     }
 
-    public List<Good> search(String keyword){
-        return goodDao.findByNameLike("%" + keyword + "%");
-    }
+    // public List<Good> search(String keyword){
+    //     return goodDao.findByNameLike("%" + keyword + "%");
+    // }
 }
 
 

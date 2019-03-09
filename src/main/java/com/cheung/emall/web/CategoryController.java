@@ -8,6 +8,7 @@ import com.cheung.emall.service.CategoryService;
 // import com.cheung.emall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+// import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 // import org.springframework.cache.annotation.CachePut;
 // import org.springframework.cache.annotation.Caching;
@@ -43,8 +44,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping("/categories")
-    // @CachePut(key = "#root.methodName + 'Category' ")
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true, key = " 'home' ")
     public Category add(Category category, MultipartFile image, HttpServletRequest request)
             throws Exception{
         categoryService.add(category);
@@ -62,7 +62,7 @@ public class CategoryController {
 
 
     @DeleteMapping("/categories/{id}")
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true, key = " 'home' ")
     public void delete(
         @PathVariable("id") int id,
         HttpServletRequest request
@@ -75,8 +75,7 @@ public class CategoryController {
     }
 
     @PutMapping("/categories/{id}")
-    // @CachePut(key = "#root.methodName + 'Category' ")
-    @CacheEvict(allEntries = true)
+    @CacheEvict(allEntries = true, key = " 'home' ")
     public Category update(
         @PathVariable("id")int id, 
         MultipartFile image, 
@@ -108,8 +107,6 @@ public class CategoryController {
     public List<Category> listCategory() throws Exception{
         return categoryService.listCategory();
     }
-
-
 
 //    @GetMapping("/categories")
 //    public Page4Navigator<Category> listCategoryByPages(

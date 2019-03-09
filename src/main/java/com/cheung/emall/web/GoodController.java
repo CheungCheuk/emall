@@ -9,6 +9,8 @@ import com.cheung.emall.service.GoodImageService;
 import com.cheung.emall.service.GoodService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * GoodController
  */
 @RestController
+@CacheConfig( cacheNames = "category")
 public class GoodController {
     @Autowired GoodService goodService;
     @Autowired CategoryService categoryService;
@@ -28,30 +31,23 @@ public class GoodController {
 
 
     @PostMapping("/goods")
+    @CacheEvict(allEntries=true, key = "'home'")
     public Good addgGood( @RequestBody Good good ) throws Exception{
         good.setCreateDate(new Date());
         return goodService.add(good);
     }
 
     @DeleteMapping("/goods/{id}")
+    @CacheEvict(allEntries=true, key = "'home'")
     public void deleteGood( @PathVariable("id") int id) {
         goodService.delete(id);
     }
 
-
     @PutMapping("/goods/{id}")
-    public Good updateGood( @PathVariable("id") int id, @RequestBody Good good) {
-        // Good updateBean = goodService.get(id);
-        // updateBean.setName(good.getName());
-        // updateBean.setOriginalPrice(good.getOriginalPrice());
-        // updateBean.setPromotePrice(good.getPromotePrice());
-        // updateBean.setStock(good.getStock());
-        // updateBean.setSubTitle(good.getSubTitle());
-        
+    @CacheEvict(allEntries=true, key = "'home'")
+    public Good updateGood( @PathVariable("id") int id, @RequestBody Good good) {        
         return goodService.update(good);
     }
-
-
 
     @GetMapping("/categories/{cid}/goods")
     public List<Good> listGoods( @PathVariable("cid") int category_id ) throws Exception{
