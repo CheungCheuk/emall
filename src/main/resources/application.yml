@@ -38,4 +38,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: 127.0.0.1:9300
+  output:
+    ansi:
+      enabled: ALWAYS
 
