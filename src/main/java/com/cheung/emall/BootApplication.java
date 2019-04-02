@@ -24,4 +24,5 @@ public class BootApplication {
         //  有该类的引用实例时，使用 getClass()
         SpringApplication.run(BootApplication.class,args);
     }
+    
 }

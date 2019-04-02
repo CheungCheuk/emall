@@ -64,7 +64,7 @@ public class AdminPageController {
         return "adminPage/editAttributeValue";
     }
 
-    @GetMapping("/admin_indent")
+    @GetMapping("/admin_indent!")
     public String listIndent(){
         return "adminPage/adminIndent";
     }

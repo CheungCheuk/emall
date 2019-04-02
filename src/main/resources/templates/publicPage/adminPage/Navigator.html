@@ -1,11 +1,16 @@
-<div class="navigatorDiv" th:fragment="html" xmlns:th="http://www.thymeleaf.org">
-<nav><h1 class="navbar-brand">后台系统</h1></nav>
-<nav class="navbar navbar-default navbar-fixed-top"  style="background-color:rgb(0,0,0)">
-        <!-- <img style="margin-left: 10px; margin-right: 0px" class="pull-left" -->
-        <!-- src="img/site/jigndonglogoSmall.png" height="50px" > -->
-        <!-- <span class="navbar-brand">商城后台</span> -->
+<div th:fragment="html" xmlns:th="http://www.thymeleaf.org">
+    <!-- class="navigatorDiv"  -->
+<!-- <nav><h1 class="navbar-brand">后台系统</h1></nav> -->
+
+<!-- <nav class="nav nav-pills navbar-fixed-top">
         <a class="navbar-brand" href="admin_category">商品管理</a>
         <a class="navbar-brand" href="admin_user">用户管理</a>
         <a class="navbar-brand" href="admin_indent">订单管理</a>
-    </nav>
+    </nav> 
+-->
+    <ul class="nav nav-tabs">
+        <li><a class="navbar-brand" href="admin_category">商品管理</a></li>
+        <li><a class="navbar-brand" href="admin_user">用户管理</a></li>
+        <li><a class="navbar-brand" href="admin_indent">订单管理</a></li>
+    </ul>
 </div>
