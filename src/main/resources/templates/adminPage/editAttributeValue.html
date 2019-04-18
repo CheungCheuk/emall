@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <!-- <head th:include="/publicPage/adminPage/Header::html(')" ></head> -->
-<head th:include="/publicPage/adminPage/Header::html('编辑商品属性')" ></head>
+<head th:include="publicPage/adminPage/Header::html('编辑商品属性')" ></head>
 <body>
-<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+<div th:replace="publicPage/adminPage/Navigator::html" ></div>
 
 <div id="vueMountedHook" >
     <ol class="breadcrumb">
@@ -39,7 +39,7 @@
 
 </div>
 
-<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+<div th:replace="publicPage/adminPage/Footer::html" ></div>
 <script>
     var vue = new Vue({
         el:"#vueMountedHook",

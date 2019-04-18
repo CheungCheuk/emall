@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/publicPage/adminPage/Header::html('编辑产品')" ></head>
+<head th:include="publicPage/adminPage/Header::html('编辑产品')" ></head>
 <body>
-<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+<div th:replace="publicPage/adminPage/Navigator::html" ></div>
 
 <div id="vueMountedHook">
     <ol class="breadcrumb">
@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+<div th:replace="publicPage/adminPage/Footer::html" ></div>
 
 <script>
 var good_id = getUrlParms("good_id");

@@ -2,9 +2,9 @@
 1<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/publicPage/adminPage/Header::html('编辑属性')" ></head>
+<head th:include="publicPage/adminPage/Header::html('编辑属性')" ></head>
 <body>
-<div th:replace="/publicPage/adminPage/Navigator::html" ></div>
+<div th:replace="publicPage/adminPage/Navigator::html" ></div>
 
 <div id="vueMountedHook">
     <ol class="breadcrumb">
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div th:replace="/publicPage/adminPage/Footer::html" ></div>
+<div th:replace="publicPage/adminPage/Footer::html" ></div>
 <script>
 var ajaxURI = "attributes"; //  @PutMapping("/attributes")
 var pageURL = "admin_attribute";   //  @GetMapping("/admin_attribute")

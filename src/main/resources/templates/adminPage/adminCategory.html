@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="/publicPage/adminPage/Header::html('商品管理')">
+<head th:include="publicPage/adminPage/Header::html('商品管理')">
     <meta charset="UTF-8">
 </head>
 <!--<div th:replace="/publicPage/adminPage/Navigator::html"></div>-->
 <body>
-<div th:replace="/publicPage/adminPage/Navigator::html"></div>
+<div th:replace="publicPage/adminPage/Navigator::html"></div>
 
 <div id="vueMountedHook">
     <h1 class="label label-warning">商品管理</h1>
