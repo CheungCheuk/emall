@@ -37,7 +37,7 @@ spring:
     cache: false
   data:
     elasticsearch:
-      cluster-name: 127.0.0.1:9300
+      cluster-name: elasticsearch_altair
   output:
     ansi:
       enabled: ALWAYS

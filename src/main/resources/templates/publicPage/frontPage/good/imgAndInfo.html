@@ -1,14 +1,10 @@
 <div th:fragment="html">
     <div class="imgAndInfo">
             <div class="imgInimgAndInfo">
-
-                <!-- 默认显示缩略图 -->
                 <img 
                     v-if="null != shrinkImage" 
                     v-bind:src=" 'img/goodShrink/' + shrinkImage.id + '.jpg'" 
                     class="bigImg">
-
-                    <!-- 其他所有缩略图，点按放大 -->
                 <div class="smallImageDiv">
                     <img 
                         v-for=" shrinkImage in good.shrinkImageList" 
@@ -60,7 +56,6 @@
                         </span>
                     </div>   
                 </div>
-                <!-- 购买数量 -->
                 <div class="productNumber">
                     <span>数量</span>
                     <span>
@@ -71,8 +66,7 @@
                             type="text" value="1">
                         </span>
                         
-                        <span class="arrow">
-                            <!-- 增加数目 -->
+                        <!-- <span class="arrow">
                             <a 
                                 href="" 
                                 class="increaseNumber"
@@ -82,8 +76,6 @@
                                 </span>
                             </a>
                             <span class="updownMiddle"> </span>
-
-                            <!-- 减少数目 -->
                             <a 
                                 href=""  
                                 class="decreaseNumber"
@@ -92,20 +84,11 @@
                                     <img src="img/site/decrease.png">
                                 </span>
                             </a>
-                        </span>
+                        </span> -->
+
                     件</span>
                     <span>库存{{good.stock}}件</span>
                 </div>
-                <div class="serviceCommitment">
-                    <span class="serviceCommitmentDesc">服务承诺</span>
-                    <span class="serviceCommitmentLink">
-                        <a href="">正品保证</a>
-                        <a href="">极速退款</a>
-                        
-                        <a href="">七天无理由退换</a>
-                    </span>
-                </div>
-
                 <!-- 立即购买 -->
                 <div class="buyDiv">
                     <a 
@@ -115,7 +98,6 @@
                             立即购买
                         </button>
                     </a>
-
                     <!-- 添加到购物车 -->
                     <a 
                         href="" 
@@ -131,54 +113,3 @@
             <div style="clear:both"></div>
         </div>
     </div>
-
-
-<!-- <script>    
-    $(".addCartButton").removeAttr("disabled");
-
-    $(".addCartLink").click(function(){
-        var url = "forecheckLogin";
-        axios.get(url).then(function(response) {
-            if( 0 === response.data.code ){
-                var good_id = vue.good.id;
-                var num= $(".productNumberSetting").val();
-                var url =  "foreaddCart?good_id=" + good_id + "&amount=" + amount;
-                axios.get(url).then( response=>{
-                    result = response.data;
-                    if(0 == result.code){
-                        $(".addCartButton").html("已加入购物车");
-                        $(".addCartButton").attr("disabled","disabled");
-                        $(".addCartButton").css("background-color","lightgray")
-                        $(".addCartButton").css("border-color","lightgray")
-                        $(".addCartButton").css("color","black")
-                    }
-                });
-            }
-            else{
-                $("#loginModal").modal('show');                    
-            }          
-        });
-    });
-
-    $(".buyLink").click(function(){
-        var url = "forecheckLogin";
-        axios.get(url).then(function(response) {
-            if(0 === response.data.code){
-                var pid = vue.p.id;
-                var num= $(".productNumberSetting").val();
-                var url =  "forebuyone?pid="+pid+"&num="+num;
-                axios.get(url).then(function(response) {
-                    var oiid = response.data;
-                    location.href="buy?oiid="+oiid;
-                });                       
-            }
-            else{
-                $("#loginModal").modal('show');                    
-            }
-        });
-        return false;
-    }); 
-
-</script> -->
-
-

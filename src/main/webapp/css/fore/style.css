@@ -774,7 +774,7 @@ div.infoInimgAndInfo div.productSubTitle {
 
 div.infoInimgAndInfo div.juhuasuan {
 	/* 	height:40px; */
-	background-color: #2DA77A;
+	background-color: rgb(224, 65, 16);
 	color: white;
 	text-align: center;
 	line-height: 40px;
@@ -805,7 +805,7 @@ div.infoInimgAndInfo div.promotionDiv {
 }
 
 div.infoInimgAndInfo div.productPriceDiv {
-	background-image: url(../../img/site/priceBackground.png);
+	/* background-image: url(../../img/site/priceBackground.png); */
 	height: 102px;
 	padding: 10px;
 	color: #666666;

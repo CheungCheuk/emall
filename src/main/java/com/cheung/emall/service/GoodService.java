@@ -67,6 +67,7 @@ public class GoodService {
     public List<Good> esSearch (String name){
         //  未初始化，先初始化
         if ( !initElasticsearch() ){
+            //未初始化，则实行初始化
             List<Good> goods = new ArrayList<>();
             goodDao.findAll().forEach(e -> goods.add(e));
             for( Good good : goods ){

@@ -27,7 +27,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Table(name = "good")
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 // @Document(indexName = "emall",type = "good")    //  import org.springframework.data.elasticsearch.annotations.Document;
-@Document(indexName = "emall")
+@Document(indexName = "emall", type= "goods")
 public class Good {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

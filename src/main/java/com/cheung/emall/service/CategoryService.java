@@ -42,7 +42,7 @@ public class CategoryService {
     // @Cacheable(key = " 'categories-all' ")  //  在 redis 中的 key 名称，通过命令行：get categories-all 即可获取相应的所哟实体
     public List<Category> listCategory() {
         //  根据 id 倒排序
-        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        Sort sort = new Sort(Sort.Direction.ASC,"id");
         return categoryDAO.findAll(sort);
     }
     
